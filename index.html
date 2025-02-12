@@ -5,97 +5,185 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Finnish Pepe - The Meme Coin of Finland</title>
 
+    <!-- Google Fonts for Trendy Look -->
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+
     <style>
-        /* Background Image */
+        /* General Styles */
         body {
-            font-family: 'Impact', sans-serif;
-            text-align: center;
-            background-image: url('background-image.png'); /* Replace with your actual image file name */
+            font-family: 'Inter', sans-serif;
+            background-image: url('background-image.png'); /* Replace with your actual background */
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
-            color: #000000; /* Black text */
+            color: white;
             margin: 0;
             padding: 0;
         }
-        
-        .container {
-            max-width: 800px;
-            margin: 50px auto;
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.85); /* White background with slight transparency */
-            border-radius: 10px;
-            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+
+        /* Header Section */
+        .header {
+            text-align: center;
+            padding: 60px 20px;
+            background: rgba(40, 38, 38, 0.8);
+            backdrop-filter: blur(5px);
         }
         
-        h1 {
-            color: #00ccff;
-            font-size: 42px;
+        .header h1 {
+            font-size: 60px;
+            font-family: 'Bebas Neue', sans-serif;
             text-transform: uppercase;
+            color: #00ccff;
+            letter-spacing: 2px;
         }
         
-        p {
+        .header p {
             font-size: 22px;
-            color: #000000; /* Black text for slogan */
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        /* Button */
+        .button {
+            display: inline-block;
+            padding: 20px 40px;
+            margin-top: 20px;
+            font-size: 24px;
+            font-weight: bold;
+            border-radius: 12px;
+            font-family: 'Bebas Neue', sans-serif;
+            background: linear-gradient(45deg, #00ccff, #0055aa);
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease-in-out;
+            box-shadow: 0 6px 15px rgba(0, 255, 255, 0.3);
+        }
+        
+        .button:hover {
+            background: linear-gradient(45deg, #0055aa, #00ccff);
+            transform: scale(1.1);
+            box-shadow: 0 8px 20px rgba(0, 255, 255, 0.4);
+        }
+
+        /* Sections */
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background: rgba(40, 38, 38, 0.8);
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .container h2 {
+            font-size: 36px;
+            font-family: 'Bebas Neue', sans-serif;
+            color: #00ccff;
+            margin-bottom: 20px;
+        }
+
+        /* Image Grid */
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* 3 images per row */
+            gap: 15px;
+            justify-items: center;
+        }
+
+        .image-grid img {
+            width: 100%;
+            max-width: 300px; /* Adjust size */
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .image-grid img:hover {
+            transform: scale(1.05);
+        }
+
+        /* Social Links */
+        .social-links {
+            margin-top: 30px;
         }
         
         .social-links a {
-            display: block;
-            margin: 15px;
-            text-decoration: none;
+            display: inline-block;
+            margin: 10px;
             font-size: 20px;
-            color: #0077cc;
             font-weight: bold;
-            transition: 0.3s;
+            color: #00ccff;
+            text-decoration: none;
+            transition: all 0.3s ease-in-out;
         }
         
         .social-links a:hover {
             color: #0055aa;
             transform: scale(1.1);
         }
-        
-        .button {
-            display: inline-block;
-            padding: 12px 24px;
-            margin-top: 20px;
-            background-color: #0077cc;
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.7);
             color: white;
-            font-size: 22px;
-            font-weight: bold;
-            border-radius: 8px;
-            text-decoration: none;
-            transition: 0.3s;
+            font-size: 16px;
         }
-        
-        .button:hover {
-            background-color: #0055aa;
-            transform: scale(1.1);
-        }
-        
-        .image-container {
-            margin-top: 20px;
-        }
-        
-        .image-container img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 10px;
-        }
+
     </style>
 </head>
 <body>
-    <div class="container">
+
+    <!-- Header Section -->
+    <div class="header">
         <h1>Finnish Pepe</h1>
         <p>🐸 The Meme Coin That Embraces Finnish Culture 🇫🇮</p>
         <a href="https://pumppad.gg/0xf42afb01a4a981fa542076d1821a3f6704462ecf" class="button" target="_blank">Buy $FINPEPE</a>
+    </div>
+
+    <!-- About Section -->
+    <div class="container">
+        <h2>About Finnish Pepe</h2>
+        <p>Finnish Pepe is a meme coin that celebrates Finnish culture with humor and fun. Join the movement and be part of the next legendary meme token!</p>
+    </div>
+
+    <!-- Image Section (15 Image Grid) -->
+    <div class="container">
+        <div class="image-grid">
+            <img src="image1.jpg" alt="Finnish Pepe 1">
+            <img src="image2.jpg" alt="Finnish Pepe 2">
+            <img src="image3.jpg" alt="Finnish Pepe 3">
+            <img src="image4.jpg" alt="Finnish Pepe 4">
+            <img src="image5.jpg" alt="Finnish Pepe 5">
+            <img src="image6.jpg" alt="Finnish Pepe 6">
+            <img src="image7.jpg" alt="Finnish Pepe 7">
+            <img src="image8.jpg" alt="Finnish Pepe 8">
+            <img src="image9.jpg" alt="Finnish Pepe 9">
+            <img src="image10.jpg" alt="Finnish Pepe 10">
+            <img src="image11.jpg" alt="Finnish Pepe 11">
+            <img src="image12.jpg" alt="Finnish Pepe 12">
+            <img src="image13.jpg" alt="Finnish Pepe 13">
+            <img src="image14.jpg" alt="Finnish Pepe 14">
+            <img src="image15.jpg" alt="Finnish Pepe 15">
+        </div>
+    </div>
+
+    <!-- Social Media Links -->
+    <div class="container">
+        <h2>Join the Community</h2>
         <div class="social-links">
             <a href="https://x.com/FinnishPepee" target="_blank">Follow us on X (Twitter)</a>
             <a href="https://www.tiktok.com/@finnish.pepe" target="_blank">Follow us on TikTok</a>
             <a href="https://t.me/finnishpepe" target="_blank">Join us on Telegram</a>
         </div>
-        <div class="image-container">
-            <img src="finnish_pepe_image.png" alt="Finnish Pepe Artwork">
-        </div>
     </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        © 2025 Finnish Pepe. All rights reserved.
+    </div>
+
 </body>
 </html>
