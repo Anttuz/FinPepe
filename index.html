@@ -8,6 +8,8 @@
     <!-- Google Fonts for Trendy Look -->
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;600&display=swap" rel="stylesheet">
 
+    <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+
     <style>
         /* General Styles */
         body {
@@ -306,9 +308,17 @@
                         "type": "function"
                     }
                 ];
+                
+                // Create contract instance
                 const tokenContract = new web3.eth.Contract(tokenABI, tokenAddress);
+
+                // Call `balanceOf` method
                 const balance = await tokenContract.methods.balanceOf(walletAddress).call();
+
+                // Convert balance from wei
                 const formattedBalance = balance / Math.pow(10, tokenDecimals);
+                
+                // Display balance
                 document.getElementById("token-balance").innerText = "Your $FINPEPE Balance: " + formattedBalance.toFixed(4);
             } catch (error) {
                 console.error("Error fetching token balance", error);
@@ -316,7 +326,6 @@
             }
         }
     </script>
-
 
 </body>
 </html>
