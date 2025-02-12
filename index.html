@@ -86,6 +86,36 @@
             box-shadow: 0 8px 20px rgba(0, 255, 255, 0.4);
         }
 
+        .wallet-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .wallet-button {
+            padding: 15px 30px;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 10px;
+            background: linear-gradient(45deg, #ff9900, #ff6600);
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+            box-shadow: 0 5px 15px rgba(255, 153, 0, 0.3);
+        }
+
+        .wallet-button:hover {
+            background: linear-gradient(45deg, #ff6600, #ff9900);
+            transform: scale(1.05);
+        }
+
+        #wallet-address, #token-balance {
+            margin-top: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #00ffcc;
+        }
+
         /* Sections */
         .container {
             max-width: 1000px;
@@ -168,11 +198,19 @@
         <a href="https://pumppad.gg/0xf42afb01a4a981fa542076d1821a3f6704462ecf" class="button" target="_blank">Buy $FINPEPE</a>
     </div>
 
+    <div class="wallet-container">
+        <button class="wallet-button" onclick="connectWallet()">Connect Wallet</button>
+        <p id="wallet-address"></p>
+        <p id="token-balance"></p>
+    </div>
+
     <!-- About Section -->
     <div class="container">
         <h2>About Finnish Pepe</h2>
         <p>Finnish Pepe is a meme coin that celebrates Finnish culture with humor and fun. Join the movement and be part of the next legendary meme token!</p>
     </div>
+
+    
 
     <!-- Image Section (15 Image Grid) -->
     <div class="container">
@@ -209,6 +247,52 @@
     <div class="footer">
         © 2025 Finnish Pepe. All rights reserved.
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+    <script>
+        const tokenAddress = "0xf42afb01a4a981fa542076d1821a3f6704462ecf";
+        const tokenDecimals = 18;
+        const tokenABI = [
+            {
+                "constant": true,
+                "inputs": [{"name": "_owner", "type": "address"}],
+                "name": "balanceOf",
+                "outputs": [{"name": "balance", "type": "uint256"}],
+                "type": "function"
+            }
+        ];
+
+        async function connectWallet() {
+            if (window.ethereum) {
+                try {
+                    const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
+                    const walletAddress = accounts[0];
+                    document.getElementById("wallet-address").innerText = "Connected: " + walletAddress.slice(0, 6) + "..." + walletAddress.slice(-4);
+                    fetchTokenBalance(walletAddress);
+                } catch (error) {
+                    console.error("User denied wallet connection", error);
+                    document.getElementById("wallet-address").innerText = "Connection failed!";
+                }
+            } else {
+                document.getElementById("wallet-address").innerText = "MetaMask not detected!";
+            }
+        }
+
+        async function fetchTokenBalance(walletAddress) {
+            if (window.ethereum) {
+                const web3 = new Web3(window.ethereum);
+                const tokenContract = new web3.eth.Contract(tokenABI, tokenAddress);
+                try {
+                    const balance = await tokenContract.methods.balanceOf(walletAddress).call();
+                    const formattedBalance = balance / Math.pow(10, tokenDecimals);
+                    document.getElementById("token-balance").innerText = "Your $FINPEPE Balance: " + formattedBalance.toFixed(4);
+                } catch (error) {
+                    console.error("Error fetching token balance", error);
+                    document.getElementById("token-balance").innerText = "Failed to fetch balance!";
+                }
+            }
+        }
+    </script>
 
 </body>
 </html>
