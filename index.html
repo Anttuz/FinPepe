@@ -8,8 +8,6 @@
     <!-- Google Fonts for Trendy Look -->
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;600&display=swap" rel="stylesheet">
 
-    <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
-
     <style>
         /* General Styles */
         body {
@@ -86,36 +84,6 @@
             background: linear-gradient(45deg, #0055aa, #00ccff);
             transform: scale(1.1);
             box-shadow: 0 8px 20px rgba(0, 255, 255, 0.4);
-        }
-
-        .wallet-container {
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        .wallet-button {
-            padding: 15px 30px;
-            font-size: 20px;
-            font-weight: bold;
-            border-radius: 10px;
-            background: linear-gradient(45deg, #ff9900, #ff6600);
-            color: white;
-            border: none;
-            cursor: pointer;
-            transition: all 0.3s ease-in-out;
-            box-shadow: 0 5px 15px rgba(255, 153, 0, 0.3);
-        }
-
-        .wallet-button:hover {
-            background: linear-gradient(45deg, #ff6600, #ff9900);
-            transform: scale(1.05);
-        }
-
-        #wallet-address, #token-balance {
-            margin-top: 10px;
-            font-size: 18px;
-            font-weight: bold;
-            color: #00ffcc;
         }
 
         /* Sections */
@@ -200,19 +168,11 @@
         <a href="https://pumppad.gg/0xf42afb01a4a981fa542076d1821a3f6704462ecf" class="button" target="_blank">Buy $FINPEPE</a>
     </div>
 
-    <div class="wallet-container">
-        <button class="wallet-button" onclick="connectWallet()">Connect Wallet</button>
-        <p id="wallet-address"></p>
-        <p id="token-balance"></p>
-    </div>
-
     <!-- About Section -->
     <div class="container">
         <h2>About Finnish Pepe</h2>
         <p>Finnish Pepe is a meme coin that celebrates Finnish culture with humor and fun. Join the movement and be part of the next legendary meme token!</p>
     </div>
-
-    
 
     <!-- Image Section (15 Image Grid) -->
     <div class="container">
@@ -249,83 +209,6 @@
     <div class="footer">
         © 2025 Finnish Pepe. All rights reserved.
     </div>
-
-    <script>
-        const tokenAddress = "0xf42afb01a4a981fa542076d1821a3f6704462ecf"; // $FINPEPE contract
-        const tokenDecimals = 18;
-        const pepeUnchainedRPC = "https://rpc-pepe-unchained-gupg0lo9wf.t.conduit.xyz/";
-        const pepeUnchainedChainId = "0xd51"; // 3409 in hex
-        const pepeUnchainedChainName = "Pepe Unchained Layer2";
-        const pepeUnchainedSymbol = "PEPU";
-        const pepeUnchainedExplorer = "https://pepuscan.com/";
-
-        async function connectWallet() {
-            if (window.ethereum) {
-                try {
-                    // Request wallet connection
-                    const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
-                    const walletAddress = accounts[0];
-                    document.getElementById("wallet-address").innerText = "Connected: " + walletAddress.slice(0, 6) + "..." + walletAddress.slice(-4);
-
-                    // Check if user is on the correct network
-                    const currentChainId = await window.ethereum.request({ method: "eth_chainId" });
-                    if (currentChainId !== pepeUnchainedChainId) {
-                        await window.ethereum.request({
-                            method: "wallet_addEthereumChain",
-                            params: [{
-                                chainId: pepeUnchainedChainId,
-                                chainName: pepeUnchainedChainName,
-                                nativeCurrency: {
-                                    name: pepeUnchainedSymbol,
-                                    symbol: pepeUnchainedSymbol,
-                                    decimals: 18
-                                },
-                                rpcUrls: [pepeUnchainedRPC],
-                                blockExplorerUrls: [pepeUnchainedExplorer]
-                            }]
-                        });
-                    }
-
-                    fetchTokenBalance(walletAddress);
-                } catch (error) {
-                    console.error("Wallet connection failed", error);
-                    document.getElementById("wallet-address").innerText = "Connection failed!";
-                }
-            } else {
-                document.getElementById("wallet-address").innerText = "MetaMask not detected!";
-            }
-        }
-
-        async function fetchTokenBalance(walletAddress) {
-            try {
-                const web3 = new Web3(pepeUnchainedRPC);
-                const tokenABI = [
-                    {
-                        "constant": true,
-                        "inputs": [{"name": "_owner", "type": "address"}],
-                        "name": "balanceOf",
-                        "outputs": [{"name": "balance", "type": "uint256"}],
-                        "type": "function"
-                    }
-                ];
-                
-                // Create contract instance
-                const tokenContract = new web3.eth.Contract(tokenABI, tokenAddress);
-
-                // Call `balanceOf` method
-                const balance = await tokenContract.methods.balanceOf(walletAddress).call();
-
-                // Convert balance from wei
-                const formattedBalance = balance / Math.pow(10, tokenDecimals);
-                
-                // Display balance
-                document.getElementById("token-balance").innerText = "Your $FINPEPE Balance: " + formattedBalance.toFixed(4);
-            } catch (error) {
-                console.error("Error fetching token balance", error);
-                document.getElementById("token-balance").innerText = "Failed to fetch balance!";
-            }
-        }
-    </script>
 
 </body>
 </html>
