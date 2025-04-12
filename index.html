@@ -1,248 +1,216 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Finnish Pepe - The Meme Coin of Finland</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finnish Pepe - The Meme Coin of Finland</title>
 
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+    <!-- Google Fonts for Trendy Look -->
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;600&display=swap" rel="stylesheet">
 
-  <style>
-    body {
-      font-family: 'Inter', sans-serif;
-      background-image: url('background-image.png');
-      background-size: cover;
-      background-position: center;
-      background-attachment: fixed;
-      color: white;
-      margin: 0;
-      padding: 0;
-      animation: fadeInBody 1s ease-in-out;
-    }
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-image: url('background-image.png'); /* Replace with your actual background */
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: white;
+            margin: 0;
+            padding: 0;
+            animation: fadeInBody 1s ease-in-out;
+        }
 
-    @keyframes fadeInBody {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
+        @keyframes fadeInBody {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(-20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+        /* Fade-in Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-    @keyframes scaleUp {
-      from { transform: scale(0.9); opacity: 0; }
-      to { transform: scale(1); opacity: 1; }
-    }
+        @keyframes scaleUp {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
 
-    .header {
-      text-align: center;
-      padding: 60px 20px;
-      background: rgba(40, 38, 38, 0.8);
-      backdrop-filter: blur(5px);
-      animation: fadeIn 1.5s ease-in-out;
-    }
+        /* Header Section */
+        .header {
+            text-align: center;
+            padding: 60px 20px;
+            background: rgba(40, 38, 38, 0.8);
+            backdrop-filter: blur(5px);
+            animation: fadeIn 1.5s ease-in-out;
+        }
+        
+        .header h1 {
+            font-size: 60px;
+            font-family: 'Bebas Neue', sans-serif;
+            text-transform: uppercase;
+            color: #00ccff;
+            letter-spacing: 2px;
+            animation: fadeIn 2s ease-in-out;
+        }
+        
+        .header p {
+            font-size: 22px;
+            font-weight: 600;
+            color: #ffffff;
+            animation: fadeIn 2.5s ease-in-out;
+        }
 
-    .header h1 {
-      font-size: 60px;
-      font-family: 'Bebas Neue', sans-serif;
-      text-transform: uppercase;
-      color: #00ccff;
-      letter-spacing: 2px;
-      animation: fadeIn 2s ease-in-out;
-    }
+        /* Button Animation */
+        .button {
+            display: inline-block;
+            padding: 20px 40px;
+            margin-top: 20px;
+            margin-right: 10px;
+            font-size: 24px;
+            font-weight: bold;
+            border-radius: 12px;
+            font-family: 'Bebas Neue', sans-serif;
+            background: linear-gradient(45deg, #00ccff, #0055aa);
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease-in-out;
+            box-shadow: 0 6px 15px rgba(0, 255, 255, 0.3);
+            animation: fadeIn 3s ease-in-out;
+        }
+        
+        .button:hover {
+            background: linear-gradient(45deg, #0055aa, #00ccff);
+            transform: scale(1.1);
+            box-shadow: 0 8px 20px rgba(0, 255, 255, 0.4);
+        }
 
-    .header p {
-      font-size: 22px;
-      font-weight: 600;
-      color: #ffffff;
-      animation: fadeIn 2.5s ease-in-out;
-    }
+        /* Sections */
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background: rgba(40, 38, 38, 0.8);
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            animation: scaleUp 1.5s ease-in-out;
+        }
 
-    .button {
-      display: inline-block;
-      padding: 20px 40px;
-      margin-top: 20px;
-      margin-right: 10px;
-      font-size: 24px;
-      font-weight: bold;
-      border-radius: 12px;
-      font-family: 'Bebas Neue', sans-serif;
-      background: linear-gradient(45deg, #00ccff, #0055aa);
-      color: white;
-      text-decoration: none;
-      transition: all 0.3s ease-in-out;
-      box-shadow: 0 6px 15px rgba(0, 255, 255, 0.3);
-      animation: fadeIn 3s ease-in-out;
-    }
+        .container h2 {
+            font-size: 36px;
+            font-family: 'Bebas Neue', sans-serif;
+            color: #00ccff;
+            margin-bottom: 20px;
+        }
 
-    .button:hover {
-      background: linear-gradient(45deg, #0055aa, #00ccff);
-      transform: scale(1.1);
-      box-shadow: 0 8px 20px rgba(0, 255, 255, 0.4);
-    }
+        /* Image Grid */
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* 3 images per row */
+            gap: 15px;
+            justify-items: center;
+            animation: fadeIn 1.8s ease-in-out;
+        }
 
-    .container {
-      max-width: 1000px;
-      margin: 40px auto;
-      padding: 20px;
-      background: rgba(40, 38, 38, 0.8);
-      border-radius: 10px;
-      text-align: center;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-      animation: scaleUp 1.5s ease-in-out;
-    }
+        .image-grid img {
+            width: 100%;
+            max-width: 300px; /* Adjust size */
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease-in-out;
+        }
 
-    .container h2 {
-      font-size: 36px;
-      font-family: 'Bebas Neue', sans-serif;
-      color: #00ccff;
-      margin-bottom: 20px;
-    }
+        .image-grid img:hover {
+            transform: scale(1.05);
+        }
 
-    .image-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 15px;
-      justify-items: center;
-      animation: fadeIn 1.8s ease-in-out;
-    }
+        /* Social Links */
+        .social-links {
+            margin-top: 30px;
+            animation: fadeIn 2.5s ease-in-out;
+        }
+        
+        .social-links a {
+            display: inline-block;
+            margin: 10px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #00ccff;
+            text-decoration: none;
+            transition: all 0.3s ease-in-out;
+        }
+        
+        .social-links a:hover {
+            color: #0055aa;
+            transform: scale(1.1);
+        }
 
-    .image-grid img {
-      width: 100%;
-      max-width: 300px;
-      border-radius: 10px;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-      transition: transform 0.3s ease-in-out;
-    }
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            font-size: 16px;
+            animation: fadeIn 2s ease-in-out;
+        }
 
-    .image-grid img:hover {
-      transform: scale(1.05);
-    }
-
-    .social-links {
-      margin-top: 30px;
-      animation: fadeIn 2.5s ease-in-out;
-    }
-
-    .social-links a {
-      display: inline-block;
-      margin: 10px;
-      font-size: 20px;
-      font-weight: bold;
-      color: #00ccff;
-      text-decoration: none;
-      transition: all 0.3s ease-in-out;
-    }
-
-    .social-links a:hover {
-      color: #0055aa;
-      transform: scale(1.1);
-    }
-
-    .footer {
-      text-align: center;
-      padding: 20px;
-      background: rgba(0, 0, 0, 0.7);
-      color: white;
-      font-size: 16px;
-      animation: fadeIn 2s ease-in-out;
-    }
-  </style>
+    </style>
 </head>
 <body>
 
-  <!-- Header Section -->
-  <div class="header">
-    <h1>Finnish Pepe</h1>
-    <p>🐸 The Meme Coin That Embraces Finnish Culture 🇫🇮</p>
-    <a href="https://pepuswap.com//#/swap?inputCurrency=ETH&outputCurrency=0xf42afb01a4a981fa542076d1821a3f6704462ecf" class="button" target="_blank">Buy $FINPEPE</a>
-    <a href="https://www.geckoterminal.com/pepe-unchained/pools/0x817c7d441db4dc3c54cd65e41312f1f00ea7bf7c" class="button" target="_blank">View Chart</a>
-  </div>
-
-  <!-- About Section -->
-  <div class="container">
-    <h2>About Finnish Pepe</h2>
-    <p>Finnish Pepe is a meme coin that celebrates Finnish culture with humor and fun. Join the movement and be part of the next legendary meme token!</p>
-  </div>
-
-  <!-- Token Stats Section -->
-  <div class="container">
-    <h2>$FINPEPE Token Stats</h2>
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-top: 30px;">
-      <div style="background: #1a1a1a; padding: 20px; border-radius: 12px;">
-        <h3 style="color: #00ccff; font-family: 'Bebas Neue', sans-serif;">Price</h3>
-        <p id="price" style="font-size: 20px; font-weight: 600;">Loading...</p>
-      </div>
-      <div style="background: #1a1a1a; padding: 20px; border-radius: 12px;">
-        <h3 style="color: #00ccff; font-family: 'Bebas Neue', sans-serif;">Market Cap</h3>
-        <p id="marketCap" style="font-size: 20px; font-weight: 600;">Loading...</p>
-      </div>
-      <div style="background: #1a1a1a; padding: 20px; border-radius: 12px;">
-        <h3 style="color: #00ccff; font-family: 'Bebas Neue', sans-serif;">24h Volume</h3>
-        <p id="volume24h" style="font-size: 20px; font-weight: 600;">Loading...</p>
-      </div>
-      <div style="background: #1a1a1a; padding: 20px; border-radius: 12px;">
-        <h3 style="color: #00ccff; font-family: 'Bebas Neue', sans-serif;">Liquidity</h3>
-        <p id="liquidity" style="font-size: 20px; font-weight: 600;">Loading...</p>
-      </div>
-      <div style="background: #1a1a1a; padding: 20px; border-radius: 12px;">
-        <h3 style="color: #00ccff; font-family: 'Bebas Neue', sans-serif;">Holders</h3>
-        <p id="holders" style="font-size: 20px; font-weight: 600;">N/A</p>
-      </div>
+    <!-- Header Section -->
+    <div class="header">
+        <h1>Finnish Pepe</h1>
+        <p>🐸 The Meme Coin That Embraces Finnish Culture 🇫🇮</p>
+        <a href="https://pepuswap.com//#/swap?inputCurrency=ETH&outputCurrency=0xf42afb01a4a981fa542076d1821a3f6704462ecf" class="button" target="_blank">Buy $FINPEPE</a>
+        <a href="https://www.geckoterminal.com/pepe-unchained/pools/0x817c7d441db4dc3c54cd65e41312f1f00ea7bf7c" class="button" target="_blank">View Chart</a>
     </div>
-    <div style="margin-top: 30px; font-size: 16px; word-wrap: break-word;">
-      <strong>Contract:</strong>
-      <span style="color: #00ccff;">0xf42a...6ecf</span><br />
-      <a href="https://www.geckoterminal.com/pepe-unchained/pools/0x817c7d441db4dc3c54cd65e41312f1f00ea7bf7c" target="_blank" style="color: #00ccff; text-decoration: underline; font-weight: bold;">View Full Chart on GeckoTerminal</a>
+
+    <!-- About Section -->
+    <div class="container">
+        <h2>About Finnish Pepe</h2>
+        <p>Finnish Pepe is a meme coin that celebrates Finnish culture with humor and fun. Join the movement and be part of the next legendary meme token!</p>
     </div>
-  </div>
 
-  <!-- Image Grid -->
-  <div class="container">
-    <div class="image-grid">
-      <img src="image1.jpg" alt="Finnish Pepe 1" />
-      <img src="image2.jpg" alt="Finnish Pepe 2" />
-      <img src="image3.jpg" alt="Finnish Pepe 3" />
-      <!-- Add remaining images -->
+    <!-- Image Section (15 Image Grid) -->
+    <div class="container">
+        <div class="image-grid">
+            <img src="image1.jpg" alt="Finnish Pepe 1">
+            <img src="image2.jpg" alt="Finnish Pepe 2">
+            <img src="image3.jpg" alt="Finnish Pepe 3">
+            <img src="image4.jpg" alt="Finnish Pepe 4">
+            <img src="image5.jpg" alt="Finnish Pepe 5">
+            <img src="image6.jpg" alt="Finnish Pepe 6">
+            <img src="image7.jpg" alt="Finnish Pepe 7">
+            <img src="image8.jpg" alt="Finnish Pepe 8">
+            <img src="image9.jpg" alt="Finnish Pepe 9">
+            <img src="image10.jpg" alt="Finnish Pepe 10">
+            <img src="image11.jpg" alt="Finnish Pepe 11">
+            <img src="image12.jpg" alt="Finnish Pepe 12">
+            <img src="image13.jpg" alt="Finnish Pepe 13">
+            <img src="image14.jpg" alt="Finnish Pepe 14">
+            <img src="image15.jpg" alt="Finnish Pepe 15">
+        </div>
     </div>
-  </div>
 
-  <!-- Community Links -->
-  <div class="container">
-    <h2>Join the Community</h2>
-    <div class="social-links">
-      <a href="https://x.com/FinPepee" target="_blank">Follow us on X (Twitter)</a>
-      <a href="https://www.tiktok.com/@finnish.pepe" target="_blank">Follow us on TikTok</a>
-      <a href="https://t.me/finnish_pepe" target="_blank">Join us on Telegram</a>
+    <!-- Social Media Links -->
+    <div class="container">
+        <h2>Join the Community</h2>
+        <div class="social-links">
+            <a href="https://x.com/FinPepee" target="_blank">Follow us on X (Twitter)</a>
+            <a href="https://www.tiktok.com/@finnish.pepe" target="_blank">Follow us on TikTok</a>
+            <a href="https://t.me/finnish_pepe" target="_blank">Join us on Telegram</a>
+        </div>
     </div>
-  </div>
 
-  <!-- Footer -->
-  <div class="footer">© 2025 Finnish Pepe. All rights reserved.</div>
-
-  <!-- Dexscreener API Script -->
-  <script>
-    async function fetchTokenStats() {
-      try {
-        const res = await fetch('https://api.dexscreener.com/latest/dex/pairs/pepe-unchained/0x817c7d441db4dc3c54cd65e41312f1f00ea7bf7c');
-        const data = await res.json();
-        const pair = data.pairs[0];
-
-        document.getElementById('price').textContent = `$${parseFloat(pair.priceUsd).toFixed(6)}`;
-        document.getElementById('marketCap').textContent = `$${Number(pair.marketCap).toLocaleString()}`;
-        document.getElementById('volume24h').textContent = `$${Number(pair.volume.h24).toLocaleString()}`;
-        document.getElementById('liquidity').textContent = `$${Number(pair.liquidity.usd).toLocaleString()}`;
-        document.getElementById('holders').textContent = 'N/A'; // Add a real source if needed
-      } catch (e) {
-        console.error('Failed to fetch token stats:', e);
-      }
-    }
-
-    fetchTokenStats();
-    setInterval(fetchTokenStats, 300000); // Auto-refresh every 5 mins
-  </script>
+    <!-- Footer -->
+    <div class="footer">
+        © 2025 Finnish Pepe. All rights reserved.
+    </div>
 
 </body>
 </html>
