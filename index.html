@@ -12,7 +12,7 @@
         /* General Styles */
         body {
             font-family: 'Inter', sans-serif;
-            background-image: url('background-image.png'); /* Replace with your actual background */
+            background-image: url('background-image.png');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
@@ -27,7 +27,6 @@
             to { opacity: 1; }
         }
 
-        /* Fade-in Animation */
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(-20px); }
             to { opacity: 1; transform: translateY(0); }
@@ -38,7 +37,6 @@
             to { transform: scale(1); opacity: 1; }
         }
 
-        /* Header Section */
         .header {
             text-align: center;
             padding: 60px 20px;
@@ -46,7 +44,7 @@
             backdrop-filter: blur(5px);
             animation: fadeIn 1.5s ease-in-out;
         }
-        
+
         .header h1 {
             font-size: 60px;
             font-family: 'Bebas Neue', sans-serif;
@@ -55,7 +53,7 @@
             letter-spacing: 2px;
             animation: fadeIn 2s ease-in-out;
         }
-        
+
         .header p {
             font-size: 22px;
             font-weight: 600;
@@ -63,7 +61,6 @@
             animation: fadeIn 2.5s ease-in-out;
         }
 
-        /* Button Animation */
         .button {
             display: inline-block;
             padding: 20px 40px;
@@ -80,14 +77,13 @@
             box-shadow: 0 6px 15px rgba(0, 255, 255, 0.3);
             animation: fadeIn 3s ease-in-out;
         }
-        
+
         .button:hover {
             background: linear-gradient(45deg, #0055aa, #00ccff);
             transform: scale(1.1);
             box-shadow: 0 8px 20px rgba(0, 255, 255, 0.4);
         }
 
-        /* Sections */
         .container {
             max-width: 1000px;
             margin: 40px auto;
@@ -106,10 +102,9 @@
             margin-bottom: 20px;
         }
 
-        /* Image Grid */
         .image-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr); /* 3 images per row */
+            grid-template-columns: repeat(3, 1fr);
             gap: 15px;
             justify-items: center;
             animation: fadeIn 1.8s ease-in-out;
@@ -117,7 +112,7 @@
 
         .image-grid img {
             width: 100%;
-            max-width: 300px; /* Adjust size */
+            max-width: 300px;
             border-radius: 10px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
             transition: transform 0.3s ease-in-out;
@@ -127,12 +122,11 @@
             transform: scale(1.05);
         }
 
-        /* Social Links */
         .social-links {
             margin-top: 30px;
             animation: fadeIn 2.5s ease-in-out;
         }
-        
+
         .social-links a {
             display: inline-block;
             margin: 10px;
@@ -142,13 +136,12 @@
             text-decoration: none;
             transition: all 0.3s ease-in-out;
         }
-        
+
         .social-links a:hover {
             color: #0055aa;
             transform: scale(1.1);
         }
 
-        /* Footer */
         .footer {
             text-align: center;
             padding: 20px;
@@ -157,7 +150,6 @@
             font-size: 16px;
             animation: fadeIn 2s ease-in-out;
         }
-
     </style>
 </head>
 <body>
@@ -174,6 +166,19 @@
     <div class="container">
         <h2>About Finnish Pepe</h2>
         <p>Finnish Pepe is a meme coin that celebrates Finnish culture with humor and fun. Join the movement and be part of the next legendary meme token!</p>
+    </div>
+
+    <!-- Live Chart Section -->
+    <div class="container">
+        <h2>Live $FINPEPE Chart</h2>
+        <iframe 
+            src="https://www.geckoterminal.com/pepe-unchained/pools/0x817c7d441db4dc3c54cd65e41312f1f00ea7bf7c"
+            width="100%" 
+            height="600" 
+            frameborder="0" 
+            allowfullscreen 
+            style="border-radius: 10px; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);">
+        </iframe>
     </div>
 
     <!-- Image Section (15 Image Grid) -->
