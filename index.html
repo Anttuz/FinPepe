@@ -9,6 +9,19 @@
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;600&display=swap" rel="stylesheet">
 
     <style>
+        :root {
+            --pepe-cyan: #00ccff;
+            --pepe-cyan-dark: #0055aa;
+            --glass-bg: rgba(40, 38, 38, 0.8);
+            --glass-card: rgba(20, 20, 20, 0.55);
+            --glass-border: rgba(255,255,255,0.15);
+            --text-main: #fff;
+            --text-dim: #9ca3af;
+            --radius-lg: 12px;
+            --radius-xl: 16px;
+            --shadow-card: 0 10px 30px rgba(0,0,0,.4);
+        }
+
         /* General Styles */
         body {
             font-family: 'Inter', sans-serif;
@@ -41,59 +54,125 @@
         /* Header Section */
         .header {
             text-align: center;
-            padding: 60px 20px;
-            background: rgba(40, 38, 38, 0.8);
+            padding: 60px 20px 40px;
+            background: var(--glass-bg);
             backdrop-filter: blur(5px);
             animation: fadeIn 1.5s ease-in-out;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
         }
-        
+
         .header h1 {
             font-size: 60px;
             font-family: 'Bebas Neue', sans-serif;
             text-transform: uppercase;
-            color: #00ccff;
+            color: var(--pepe-cyan);
             letter-spacing: 2px;
+            line-height: 1;
+            margin: 0;
             animation: fadeIn 2s ease-in-out;
         }
-        
+
         .header p {
             font-size: 22px;
             font-weight: 600;
             color: #ffffff;
+            margin-top: 10px;
+            margin-bottom: 24px;
             animation: fadeIn 2.5s ease-in-out;
         }
 
-        /* Button Animation */
+        /* Button Row */
+        .hero-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            animation: fadeIn 2.5s ease-in-out;
+        }
+
+        /* Button Style */
         .button {
             display: inline-block;
-            padding: 20px 40px;
-            margin-top: 20px;
-            margin-right: 10px;
+            padding: 20px 32px;
             font-size: 24px;
             font-weight: bold;
-            border-radius: 12px;
+            border-radius: var(--radius-lg);
             font-family: 'Bebas Neue', sans-serif;
-            background: linear-gradient(45deg, #00ccff, #0055aa);
+            background: linear-gradient(45deg, var(--pepe-cyan), var(--pepe-cyan-dark));
             color: white;
             text-decoration: none;
-            transition: all 0.3s ease-in-out;
+            text-align: center;
+            line-height: 1.1;
             box-shadow: 0 6px 15px rgba(0, 255, 255, 0.3);
-            animation: fadeIn 3s ease-in-out;
+            transition: all 0.3s ease-in-out;
+            user-select: none;
+            min-width: 200px;
         }
-        
+
         .button:hover {
-            background: linear-gradient(45deg, #0055aa, #00ccff);
+            background: linear-gradient(45deg, var(--pepe-cyan-dark), var(--pepe-cyan));
             transform: scale(1.1);
             box-shadow: 0 8px 20px rgba(0, 255, 255, 0.4);
         }
 
-        /* Sections */
+        /* ===== LIVE MARKET STATS BAR ===== */
+        .stats-wrapper {
+            margin: 30px auto 0;
+            max-width: 1000px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 16px;
+            animation: fadeIn 2.8s ease-in-out;
+        }
+
+        .stat-card {
+            background: var(--glass-card);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-card);
+            padding: 16px 20px 14px;
+            min-width: 150px;
+            max-width: 200px;
+            text-align: left;
+        }
+
+        .stat-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-dim);
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            line-height: 1.2;
+        }
+
+        .stat-value {
+            font-size: 26px;
+            font-weight: 600;
+            color: var(--text-main);
+            line-height: 1.2;
+            margin-top: 6px;
+            font-variant-numeric: tabular-nums;
+            word-break: break-word;
+        }
+
+        .stat-sub {
+            font-size: 13px;
+            color: var(--text-dim);
+            font-weight: 500;
+            margin-top: 6px;
+            line-height: 1.4;
+            white-space: pre-line;
+        }
+
+        /* General Sections */
         .container {
             max-width: 1000px;
             margin: 40px auto;
             padding: 20px;
-            background: rgba(40, 38, 38, 0.8);
-            border-radius: 10px;
+            background: var(--glass-bg);
+            border-radius: var(--radius-xl);
             text-align: center;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
             animation: scaleUp 1.5s ease-in-out;
@@ -102,8 +181,9 @@
         .container h2 {
             font-size: 36px;
             font-family: 'Bebas Neue', sans-serif;
-            color: #00ccff;
+            color: var(--pepe-cyan);
             margin-bottom: 20px;
+            letter-spacing: 1px;
         }
 
         /* Image Grid */
@@ -132,19 +212,19 @@
             margin-top: 30px;
             animation: fadeIn 2.5s ease-in-out;
         }
-        
+
         .social-links a {
             display: inline-block;
             margin: 10px;
             font-size: 20px;
             font-weight: bold;
-            color: #00ccff;
+            color: var(--pepe-cyan);
             text-decoration: none;
             transition: all 0.3s ease-in-out;
         }
-        
+
         .social-links a:hover {
-            color: #0055aa;
+            color: var(--pepe-cyan-dark);
             transform: scale(1.1);
         }
 
@@ -158,16 +238,89 @@
             animation: fadeIn 2s ease-in-out;
         }
 
+        /* Responsive tweaks */
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 44px;
+            }
+            .header p {
+                font-size: 18px;
+            }
+            .button {
+                font-size: 20px;
+                padding: 16px 24px;
+                min-width: 160px;
+            }
+            .stat-value {
+                font-size: 22px;
+            }
+        }
     </style>
 </head>
 <body>
 
-    <!-- Header Section -->
+    <!-- Header / Hero Section -->
     <div class="header">
         <h1>Finnish Pepe</h1>
         <p>🐸 The Meme Coin That Embraces Finnish Culture 🇫🇮</p>
-        <a href="https://pepuswap.com//#/swap?inputCurrency=ETH&outputCurrency=0xf42afb01a4a981fa542076d1821a3f6704462ecf" class="button" target="_blank">Buy $FINPEPE</a>
-        <a href="https://www.geckoterminal.com/pepe-unchained/pools/0xa7b588c2282536e24b5df680d6551af22540e422" class="button" target="_blank">View Chart</a>
+
+        <!-- CTA Buttons -->
+        <div class="hero-buttons">
+            <a href="https://penkmarket.pepubank.net" class="button" target="_blank">Buy $FINPEPE On L1</a>
+            <a href="https://pepuswap.com//#/swap?inputCurrency=ETH&outputCurrency=0x421402ffc649d2ba0f2655c42bcd1e7dcc6f3970" class="button" target="_blank">Buy $FINPEPE On L2</a>
+            <a href="https://www.geckoterminal.com/pepe-unchained/pools/0xa7b588c2282536e24b5df680d6551af22540e422" class="button" target="_blank">View Chart</a>
+        </div>
+
+        <!-- Live Market Stats -->
+        <div class="stats-wrapper">
+            <!-- PRICE -->
+            <div class="stat-card">
+                <div class="stat-label">
+                    <span>Price</span>
+                    <span>$FINPEPE</span>
+                </div>
+                <div id="statPrice" class="stat-value">—</div>
+                <div class="stat-sub">
+                    Live on-chain
+                </div>
+            </div>
+
+            <!-- MARKET CAP -->
+            <div class="stat-card">
+                <div class="stat-label">
+                    <span>Market Cap</span>
+                    <span>FDV/MC</span>
+                </div>
+                <div id="statMCap" class="stat-value">—</div>
+                <div class="stat-sub">
+                    Approx circulating
+                </div>
+            </div>
+
+            <!-- 24H VOL -->
+            <div class="stat-card">
+                <div class="stat-label">
+                    <span>24h Volume</span>
+                    <span>USD</span>
+                </div>
+                <div id="statVol24" class="stat-value">—</div>
+                <div class="stat-sub">
+                    Past 24 hours
+                </div>
+            </div>
+
+            <!-- 24H CHANGE -->
+            <div class="stat-card">
+                <div class="stat-label">
+                    <span>24h Change</span>
+                    <span>Price %</span>
+                </div>
+                <div id="statChange24" class="stat-value">—</div>
+                <div class="stat-sub">
+                    Since 24h ago
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- About Section -->
@@ -209,8 +362,106 @@
 
     <!-- Footer -->
     <div class="footer">
-        © 2025 Finnish Pepe. All rights reserved.
+        © <span id="year"></span> Finnish Pepe. All rights reserved.
     </div>
+
+    <!-- Live Stats Script -->
+    <script>
+    // ==========================
+    // CONFIG
+    // ==========================
+    const POOLS_URL = 'https://www.toshtech.xyz/pools_cache.json';
+
+    // Token address we care about (ERC-20 on Pepe chain / L2, etc.)
+    // Update this if needed for FINPEPE specifically.
+    const TOKEN_ADDRESS = '0x421402ffc649d2ba0f2655c42bcd1e7dcc6f3970'.toLowerCase();
+
+    // ==========================
+    // Helpers
+    // ==========================
+    function fmtUSD(num) {
+        const n = Number(num || 0);
+        const abs = Math.abs(n);
+
+        // tiny price support (meme coin life)
+        const opts = abs < 0.01
+            ? { minimumFractionDigits: 6, maximumFractionDigits: 6 }
+            : { minimumFractionDigits: 2, maximumFractionDigits: 2 };
+
+        return '$' + n.toLocaleString(undefined, opts);
+    }
+
+    function fmtBigUSD(num) {
+        const n = Number(num || 0);
+        return '$' + n.toLocaleString(undefined, {
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0
+        });
+    }
+
+    function setText(id, text) {
+        const el = document.getElementById(id);
+        if (el) el.textContent = text;
+    }
+
+    // ==========================
+    // Main loader
+    // ==========================
+    async function loadStats() {
+        try {
+            const res = await fetch(POOLS_URL, { cache: 'no-cache' });
+            const json = await res.json();
+            const pools = json.data || [];
+
+            // Try exact match by token address first
+            let tokenData = pools.find(p =>
+                (p.address || '').toLowerCase() === TOKEN_ADDRESS
+            );
+
+            // fallback: just take first entry if we didn't match
+            if (!tokenData) {
+                tokenData = pools[0];
+            }
+
+            if (!tokenData) {
+                console.warn('No token data found in pools_cache.json');
+                return;
+            }
+
+            // Extract fields
+            const price              = tokenData.price;
+            const marketCap          = tokenData.market_cap;
+            const vol24              = tokenData.volume_24h_usd;
+            const change24Pct        = tokenData.price_changes?.h24 ?? 0;
+
+            // Format + inject
+            setText('statPrice',   fmtUSD(price));
+            setText('statMCap',    fmtBigUSD(marketCap));
+            setText('statVol24',   fmtBigUSD(vol24));
+
+            const chg = Number(change24Pct);
+            const sign = chg > 0 ? '+' : '';
+            const chgTxt = sign + chg.toFixed(3) + '%';
+
+            const chgEl = document.getElementById('statChange24');
+            if (chgEl) {
+                chgEl.textContent = chgTxt;
+                chgEl.style.color = chg >= 0 ? '#00ff99' : '#ff4d4d';
+            }
+
+        } catch (err) {
+            console.error('Failed to load live stats:', err);
+        }
+    }
+
+    // bootstrap
+    document.addEventListener('DOMContentLoaded', () => {
+        // year in footer
+        document.getElementById('year').textContent = new Date().getFullYear();
+        // load stats
+        loadStats();
+    });
+    </script>
 
 </body>
 </html>
