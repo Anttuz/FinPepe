@@ -21,7 +21,12 @@
             --radius-xl: 16px;
             --shadow-card: 0 10px 30px rgba(0,0,0,.4);
         }
-
+		.promo{position:sticky;top:0;z-index:70;background:linear-gradient(90deg,#0f1b34,#0c1730,#0f1b34);background-size:200% 100%;animation:promoSlide 10s linear infinite;border-bottom:1px solid #ffffff1e;color:#dfe8ff}
+		.promo-inner{max-width:1100px;margin:0 auto;padding:8px 20px;display:flex;align-items:center;gap:10px;font-size:11px}
+		.promo .spark{width:8px;height:8px;border-radius:50%;background:radial-gradient(circle at 30% 30%, #79ffa6 0 40%, #00c67e 42% 100%);box-shadow:0 0 12px #00ffae99,0 0 24px #00ffae55;animation:pulse 1.8s ease-in-out infinite}
+		.promo a{color:#93e7ff;text-decoration:underline dotted;text-underline-offset:3px}
+		.promo a:hover{color:#b3f0ff}
+		.promo .sep{opacity:.6}	
         /* General Styles */
         body {
             font-family: 'Inter', sans-serif;
@@ -258,7 +263,16 @@
     </style>
 </head>
 <body>
-
+  <div class="promo" role="region" aria-label="Powered by ToshTech">
+    <div class="promo-inner">
+      <span class="spark" aria-hidden="true"></span>
+      <div>
+        <a href="https://www.toshtech.xyz/" target="_blank" rel="noopener">🔋 by ToshTech</a>
+        <span class="sep">—</span>
+        <span>Security &amp; trust for Pepu community.</span>
+      </div>
+    </div>
+  </div>
     <!-- Header / Hero Section -->
     <div class="header">
         <h1>Finnish Pepe</h1>
