@@ -113,12 +113,19 @@
             user-select: none;
             min-width: 200px;
         }
+        .button[disabled],
+        .button.disabled {
+            opacity: .5;
+            cursor: not-allowed;
+            filter: grayscale(0.5);
+        }
 
-        .button:hover {
+        .button:hover:not([disabled]) {
             background: linear-gradient(45deg, var(--pepe-cyan-dark), var(--pepe-cyan));
-            transform: scale(1.1);
+            transform: scale(1.07);
             box-shadow: 0 8px 20px rgba(0, 255, 255, 0.4);
         }
+
 
         /* ===== LIVE MARKET STATS BAR ===== */
         .stats-wrapper {
@@ -137,7 +144,7 @@
             border-radius: var(--radius-lg);
             box-shadow: var(--shadow-card);
             padding: 16px 20px 14px;
-            min-width: 100px;
+            min-width: 108px;
             max-width: 150px;
             text-align: left;
         }
@@ -282,6 +289,7 @@
         <div class="hero-buttons">
             <a href="https://penkmarket.pepubank.net" class="button" target="_blank">Buy $FINPEPE On L1</a>
             <a href="https://pepuswap.com//#/swap?inputCurrency=ETH&outputCurrency=0x421402ffc649d2ba0f2655c42bcd1e7dcc6f3970" class="button" target="_blank">Buy $FINPEPE On L2</a>
+			 <a href="/stake.html" class="button" disabled>Stake $FINPEPE</a>
             <a href="https://www.geckoterminal.com/pepe-unchained/pools/0xa7b588c2282536e24b5df680d6551af22540e422" class="button" target="_blank">View Chart</a>
         </div>
 
