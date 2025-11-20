@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stake $FINPEPE</title>
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+
+    <style>
+        /* ====== GLOBAL THEME (matches Finnish Pepe site) ====== */
+        :root {
+            --pepe-cyan: #00ccff;
+            --pepe-cyan-dark: #0055aa;
+            --glass-bg: rgba(40, 38, 38, 0.8);
+            --glass-card: rgba(20, 20, 20, 0.55);
+            --glass-border: rgba(255,255,255,0.15);
+            --text-main: #fff;
+            --text-dim: #9ca3af;
+            --radius-lg: 12px;
+            --radius-xl: 16px;
+            --shadow-card: 0 10px 30px rgba(0,0,0,.4);
+        }
+
+        /* Body + bg */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-image: url('https://finpepe.com/background-image.png'); /* <- same background as main site */
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            animation: fadeInBody 1s ease-in-out;
+        }
+
+        @keyframes fadeInBody {
+            from { opacity: 0; }
+            to   { opacity: 1; }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes scaleUp {
+            from { transform: scale(0.9); opacity: 0; }
+            to   { transform: scale(1); opacity: 1; }
+        }
+
+        /* ====== HEADER / HERO ====== */
+        .header {
+            text-align: center;
+            padding: 50px 20px 30px;
+            background: rgba(40, 38, 38, 0.8);
+            backdrop-filter: blur(5px);
+            animation: fadeIn 1.5s ease-in-out;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .header-toprow {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 16px;
+            align-items: flex-start;
+        }
+
+        .title-block {
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: clamp(44px, 3vw, 60px);
+            font-family: 'Bebas Neue', sans-serif;
+            text-transform: uppercase;
+            color: var(--pepe-cyan);
+            letter-spacing: 2px;
+            line-height: 1;
+            margin: 0;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        .header p {
+            font-size: 20px;
+            font-weight: 600;
+            color: #ffffff;
+            margin-top: 6px;
+            margin-bottom: 12px;
+            animation: fadeIn 2.25s ease-in-out;
+        }
+
+        /* status line under wallet connect */
+        .status-line {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-dim);
+            margin-top: 8px;
+            text-align: center;
+            min-height: 1.2em;
+        }
+
+        /* ====== BUTTONS ====== */
+        .button {
+            display: inline-block;
+            padding: 18px 32px;
+            font-size: 22px;
+            font-weight: bold;
+            border-radius: var(--radius-lg);
+            font-family: 'Bebas Neue', sans-serif;
+            background: linear-gradient(45deg, var(--pepe-cyan), var(--pepe-cyan-dark));
+            color: white;
+            text-decoration: none;
+            text-align: center;
+            line-height: 1.1;
+            cursor: pointer;
+            border: 0;
+            box-shadow: 0 6px 15px rgba(0, 255, 255, 0.3);
+            transition: all 0.2s ease-in-out;
+            user-select: none;
+        }
+
+        .button.small {
+            padding: 12px 20px;
+            font-size: 18px;
+        }
+
+        .button.full {
+            width: 100%;
+        }
+
+        .button[disabled],
+        .button.disabled {
+            opacity: .5;
+            cursor: not-allowed;
+            filter: grayscale(0.5);
+        }
+
+        .button:hover:not([disabled]) {
+            background: linear-gradient(45deg, var(--pepe-cyan-dark), var(--pepe-cyan));
+            transform: scale(1.07);
+            box-shadow: 0 8px 20px rgba(0, 255, 255, 0.4);
+        }
+
+        .wallet-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            animation: fadeIn 2.5s ease-in-out;
+        }
+
+        /* ====== MAIN STAKING WRAPPER ====== */
+        .container {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 20px;
+            background: var(--glass-bg);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-card);
+            animation: scaleUp 1.2s ease-in-out;
+        }
+
+        .section-headline {
+            font-size: 32px;
+            font-family: 'Bebas Neue', sans-serif;
+            color: var(--pepe-cyan);
+            margin: 0 0 10px;
+            text-align: center;
+            letter-spacing: 1px;
+        }
+
+        .section-desc {
+            text-align: center;
+            color: var(--text-main);
+            font-size: 16px;
+            font-weight: 500;
+            max-width: 60ch;
+            margin: 0 auto 30px;
+        }
+
+        /* grid that holds the cards */
+        .stake-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(300px,100%),1fr));
+            gap: 20px;
+        }
+
+        /* glass cards */
+        .card {
+            background: var(--glass-card);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            padding: 20px 20px 16px;
+            box-shadow: var(--shadow-card);
+            position: relative;
+            animation: fadeIn 1.4s ease-in-out;
+        }
+
+        .card h3 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 26px;
+            margin: 0 0 10px;
+            line-height: 1;
+            letter-spacing: 1px;
+            color: var(--pepe-cyan);
+            text-transform: uppercase;
+        }
+
+        .label-row {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-dim);
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        .value-big {
+            font-size: 28px;
+            font-weight: 600;
+            font-variant-numeric: tabular-nums;
+            margin: 6px 0 14px;
+            color: var(--text-main);
+            word-break: break-word;
+        }
+
+        .subline {
+            font-size: 13px;
+            color: var(--text-dim);
+            font-weight: 500;
+            line-height: 1.4;
+            white-space: pre-line;
+            word-break: break-word;
+        }
+
+        .stat-line {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-main);
+            margin: 4px 0;
+        }
+
+        .dim {
+            color: var(--text-dim);
+        }
+
+        /* inputs row */
+        .input-row {
+            display: flex;
+            flex-wrap: nowrap;
+            align-items: stretch;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .stake-input {
+            flex: 1;
+            min-width: 0;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--glass-border);
+            background: rgba(0,0,0,0.4);
+            color: #fff;
+            font-size: 16px;
+            font-weight: 600;
+            padding: 14px 12px;
+            outline: none;
+            font-family: 'Inter', sans-serif;
+        }
+        .stake-input:focus {
+            box-shadow: 0 0 10px rgba(0,255,255,.4);
+            border-color: var(--pepe-cyan);
+        }
+
+        .row-spacer {
+            height: 14px;
+        }
+
+        /* tiny status / logs */
+        .log-box {
+            background: rgba(0,0,0,0.3);
+            border: 1px dashed var(--glass-border);
+            color: var(--text-main);
+            font-size: 12px;
+            line-height: 1.4;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+            border-radius: var(--radius-lg);
+            padding: 12px;
+            max-height: 160px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        /* APR / pool info footer in middle card */
+        .pool-info {
+            font-size: 13px;
+            line-height: 1.4;
+            color: var(--text-dim);
+            margin-top: 10px;
+            white-space: pre-line;
+        }
+
+        /* ====== FOOTER ====== */
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            font-size: 14px;
+            animation: fadeIn 2s ease-in-out;
+        }
+        .footer small {
+            display: block;
+            font-size: 12px;
+            color: var(--text-dim);
+            margin-top: 4px;
+        }
+
+        /* responsive tweaks */
+        @media (max-width:480px){
+            .button { font-size:20px; padding:16px 24px; }
+            .header h1 { font-size:42px; }
+            .header p { font-size:18px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER / HERO -->
+    <header class="header">
+        <div class="header-toprow">
+            <div class="title-block">
+                <h1>Stake $FINPEPE</h1>
+                <p>🐸 Stake FINPEPE → Earn FINPEPE. No nonsense.</p>
+            </div>
+        </div>
+
+        <div class="wallet-actions">
+            <a href="https://finpepe.com" class="button small">Home</a>
+            <a href="https://pepuswap.com//#/swap?inputCurrency=ETH&outputCurrency=0xf42afb01a4a981fa542076d1821a3f6704462ecf" target="_blank" class="button small">Buy $FINPEPE</a>			
+			<button id="connectBtn" class="button small" type="button">Connect Wallet</button>
+            <button id="disconnectBtn" class="button small" type="button" disabled>Disconnect</button>
+
+        </div>
+
+        <div id="statusLine" class="status-line">Not connected</div>
+    </header>
+
+    <!-- STAKING BODY -->
+    <main class="container">
+        <h2 class="section-headline">Your Staking Dashboard</h2>
+        <p class="section-desc">
+            Connect, stake, chill. You can stake and unstake whenever the pool is open.
+            Rewards build up live on-chain.
+        </p>
+
+        <div class="stake-grid">
+
+            <!-- CARD: YOUR STAKE -->
+            <section class="card">
+                <h3>Your Staked</h3>
+
+                <div class="label-row">
+                    <span>Total Staked</span>
+                    <span class="dim" id="unlockInfo"></span>
+                </div>
+                <div id="youStaked" class="value-big">0 FINPEPE</div>
+
+                <div class="stat-line">
+                    <span class="dim">Share of Pool:</span>
+                    <span id="poolSharePct">0%</span>
+                </div>
+
+                <div class="stat-line">
+                    <span class="dim">Unlocks:</span>
+                    <span id="unlockTimeHuman">–</span>
+                </div>
+
+                <div class="row-spacer"></div>
+
+                <button id="withdrawBtn" class="button full small" type="button">
+                    Withdraw & Claim
+                </button>
+
+                <div class="subline" id="withdrawHint">
+                    You’ll withdraw all staked FINPEPE and claim all rewards.
+                </div>
+            </section>
+
+            <!-- CARD: STAKE MORE -->
+            <section class="card">
+                <h3>Stake FINPEPE</h3>
+
+                <div class="label-row">
+                    <span>Wallet Balance</span>
+                    <span id="walletBal" class="dim">0 FINPEPE</span>
+                </div>
+
+                <div class="input-row">
+                    <input
+                        id="stakeInput"
+                        class="stake-input"
+                        placeholder="0.0"
+                        inputmode="decimal"
+                        autocomplete="off"
+                        autocapitalize="off"
+                        spellcheck="false"
+                    />
+                    <button id="maxBtn" class="button small" style="flex:0 0 auto;white-space:nowrap" type="button">MAX</button>
+                </div>
+
+                <button id="stakeBtn" class="button full small" type="button">
+                    Stake Now
+                </button>
+
+                <div class="subline">
+                    "Stake Now" will auto-approve if needed, then stake.
+                </div>
+
+                <div class="row-spacer"></div>
+
+                <div class="label-row">
+                    <span>Pool APR (est)</span>
+                    <span id="aprDisplay">—</span>
+                </div>
+
+                <div class="pool-info" id="poolInfo">
+                    Total Staked: <span id="totalStaked">0 FINPEPE</span>
+                    <br/>
+                    Pool Time Left: <span id="poolTimeLeft">—</span>
+                </div>
+            </section>
+
+            <!-- CARD: REWARDS -->
+            <section class="card">
+                <h3>Your Rewards</h3>
+
+                <div class="label-row">
+                    <span>Unclaimed Rewards</span>
+                    <span class="dim">On-chain</span>
+                </div>
+                <div id="pendingRewards" class="value-big">0 FINPEPE</div>
+
+                <div class="subline" id="estYourRates">
+                    <!-- filled by JS: per sec / per hour / per day -->
+                </div>
+
+                <div class="row-spacer"></div>
+
+                <button id="claimBtn" class="button full small" type="button">
+                    Claim Rewards
+                </button>
+
+                <div class="subline" id="lastSyncLine" style="margin-top:10px;">
+                    Synced —
+                </div>
+            </section>
+
+        </div>
+
+        <div class="row-spacer"></div>
+
+        <!-- TX LOG / FEEDBACK -->
+        <section class="card">
+            <h3>Activity / Debug</h3>
+            <div id="logBox" class="log-box" aria-live="polite"></div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div>Disclaimer: $FINPEPE is a meme coin. Staking carries risk. This is not financial advice.</div>
+        <small>© <span id="year"></span> Finnish Pepe. All rights reserved.</small>
+    </footer>
+
+    <!-- scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+    <script src="walletconnect.min.js"></script>
+    <script>
+    // ==========================
+    // CONFIG (edit these)
+    // ==========================
+    const RPC        = "https://rpc-pepu-v2-mainnet-0.t.conduit.xyz";   // same RPC as before
+    const CHAIN_ID   = 97741;                                            // chain id
+    const STAKING_CA = "0xa2b34d8d64F421C3D658Da11c2c865079ff8346E";     // staking contract
+    const WC_PID     = "6e2df48125e4f633b093361ba0a87c81";               // WalletConnect project id
+    const POOL_ID    = 4;                                                // single pool only
+
+    // ==========================
+    // DOM helpers
+    // ==========================
+    const $ = id => document.getElementById(id);
+    function logMsg(...msg){
+        const box = $("logBox");
+        if (!box) return;
+        box.textContent += msg.join(" ") + "\n";
+        box.scrollTop = box.scrollHeight;
+    }
+    function setStatusLine(t){
+        const el = $("statusLine");
+        if (el) el.textContent = t;
+    }
+    function fmtNum(num, fdMin=0, fdMax=4){
+        const n = Number(num||0);
+        return n.toLocaleString(undefined,{
+            minimumFractionDigits: fdMin,
+            maximumFractionDigits: fdMax
+        });
+    }
+    function fmtUnitsSafe(bn, dec){
+        try { return ethers.utils.formatUnits(bn||0, dec||18); }
+        catch { return "0"; }
+    }
+    function parseUnitsSafe(str, dec){
+        if (!str) return ethers.BigNumber.from(0);
+        const clean = String(str).trim().replace(/,/g,"");
+        if (!clean || clean==="." || clean==="-.") return ethers.BigNumber.from(0);
+        return ethers.utils.parseUnits(clean, dec);
+    }
+    function nowSec(){ return Math.floor(Date.now()/1000); }
+    function fmtLeft(sec){
+        sec = Math.max(0, Number(sec||0));
+        const d = Math.floor(sec / 86400);
+        const h = Math.floor((sec % 86400) / 3600);
+        const m = Math.floor((sec % 3600) / 60);
+        if (d>0) return d+"d "+h+"h "+m+"m";
+        if (h>0) return h+"h "+m+"m";
+        return m+"m";
+    }
+    function tsToHuman(ts){
+        if (!ts) return "now";
+        const d = new Date(ts*1000);
+        return d.toLocaleString();
+    }
+
+    // ==========================
+    // ABIs (trimmed)
+    // ==========================
+    const ERC20_ABI = [
+        "function name() view returns (string)",
+        "function symbol() view returns (string)",
+        "function decimals() view returns (uint8)",
+        "function balanceOf(address) view returns (uint256)",
+        "function allowance(address,address) view returns (uint256)",
+        "function approve(address,uint256) returns (bool)"
+    ];
+
+    const STAKING_ABI = [
+        "function getPoolCore(uint256) view returns (address stakingToken, address rewardToken, uint256 rewardRate, uint256 periodFinish, uint256 lastUpdateTime, uint256 rewardPerTokenStored)",
+        "function getPoolPolicy(uint256) view returns (uint256 lockDuration, bool lockStaking, bool allowRestake, bool active, uint256 totalStaked, uint256 startTimestamp, uint256 reserved, bytes32 tag)",
+        "function getStakeInfo(uint256,address) view returns (uint256 amount, uint256 unclaimed, uint256 userRewardPerTokenPaid, uint256 stakeTs, uint256 exitRequestTs)",
+        "function pendingRewards(uint256,address) view returns (uint256)",
+        "function currentAPYBps(uint256) view returns (uint256)",
+        "function secondsRemaining(uint256) view returns (uint256)",
+
+        "function stake(uint256 poolId, uint256 amount, uint256 minOut)",
+        "function withdrawAll(uint256 poolId, uint256 minOut)",
+        "function claimRewards(uint256 poolId)"
+    ];
+
+    // ==========================
+    // Providers / contracts / state
+    // ==========================
+    const roProvider = new ethers.providers.JsonRpcBatchProvider(RPC);
+    roProvider.pollingInterval = 4000;
+
+    let wcProvider      = null;
+    let ethersProvider  = null;
+    let signer          = null;
+    let userAddr        = null;
+
+    let stakingRO       = null;
+    let stakingRW       = null;
+    let stakeTokenRO    = null;
+
+    // pool / token meta
+    let stakeSym    = "FINPEPE";
+    let stakeDec    = 18;
+    let totalStaked = ethers.BigNumber.from(0);
+
+    // lock + timing
+    let lockDurationSec = 0;
+    let lockEnabled     = false;
+    let userUnlockTs    = 0;
+    let poolEndTs       = 0;
+
+    // refresh timers
+    let refreshTimer = null;
+    let blockListenerAttached = false;
+
+    // ==========================
+    // INIT Readonly
+    // ==========================
+    async function initReadonly(){
+        stakingRO = new ethers.Contract(STAKING_CA, STAKING_ABI, roProvider);
+        await loadPoolData();
+        await refreshUserView(); // w/out wallet (will just zero UI)
+    }
+
+    // ==========================
+    // Load pool info (single pool)
+    // ==========================
+    async function loadPoolData(){
+        try {
+            const [
+                core,
+                policy,
+                apyBpsBN,
+                secRemainingBN
+            ] = await Promise.all([
+                stakingRO.getPoolCore(POOL_ID),
+                stakingRO.getPoolPolicy(POOL_ID),
+                stakingRO.currentAPYBps(POOL_ID).catch(()=>ethers.BigNumber.from(0)),
+                stakingRO.secondsRemaining(POOL_ID).catch(()=>ethers.BigNumber.from(0))
+            ]);
+
+            const stakingTokenAddr = core[0]; // stakingToken
+            const rewardRateBN     = core[2]; // rewardRate/sec
+            const reservedBN       = policy[6]; // reserved reward left
+            totalStaked            = policy[4]; // totalStaked
+
+            lockDurationSec        = Number(policy[0] || 0);
+            lockEnabled            = Boolean(policy[1]);
+
+            // estimate pool end
+            let secLeft = Number(secRemainingBN.toString());
+            if (!secLeft || secLeft === 0){
+                const rate = ethers.BigNumber.from(rewardRateBN||0);
+                const res  = ethers.BigNumber.from(reservedBN||0);
+                if (!rate.isZero()){
+                    secLeft = Number(res.div(rate).toString());
+                }
+            }
+            poolEndTs = secLeft>0 ? (nowSec()+secLeft) : 0;
+
+            // token metadata
+            stakeTokenRO = new ethers.Contract(stakingTokenAddr, ERC20_ABI, roProvider);
+            try {
+                stakeSym = await stakeTokenRO.symbol();
+            } catch {
+                try { stakeSym = await stakeTokenRO.name(); } catch {}
+            }
+            try {
+                stakeDec = await stakeTokenRO.decimals();
+            } catch {
+                stakeDec = 18;
+            }
+
+            // UI: APR est
+            let aprPct = Number(apyBpsBN.toString()) / 100;
+            if (!isFinite(aprPct)){ aprPct = 0; }
+            $("aprDisplay").textContent = (aprPct>0)
+                ? aprPct.toFixed(2) + "% / year"
+                : "—";
+
+            // Total staked
+            $("totalStaked").textContent =
+                fmtNum(ethers.utils.formatUnits(totalStaked, stakeDec), 0, 4) +
+                " " + stakeSym;
+
+            // Pool time left
+            $("poolTimeLeft").textContent =
+                poolEndTs>0 ? (fmtLeft(poolEndTs - nowSec()) + " left")
+                            : "Ended";
+
+        } catch (err){
+            logMsg("loadPoolData ❌", err.message || err);
+        }
+    }
+
+    // ==========================
+    // Connect wallet
+    // ==========================
+    async function connectWallet(){
+        // try injected first
+        try {
+            await connectInjected();
+            return;
+        } catch(e) {
+            // fallback WC
+        }
+        try {
+            await connectWC();
+        } catch(e) {
+            logMsg("connect ❌", e.message || e);
+        }
+    }
+
+    async function connectInjected(){
+        if (!window.ethereum) throw new Error("No injected wallet");
+        ethersProvider = new ethers.providers.Web3Provider(window.ethereum, "any");
+        await ethersProvider.send("eth_requestAccounts", []);
+        const net = await ethersProvider.getNetwork();
+        if (Number(net.chainId) !== CHAIN_ID){
+            // ask wallet to switch
+            await window.ethereum.request({
+                method: "wallet_switchEthereumChain",
+                params: [{ chainId: "0x" + CHAIN_ID.toString(16) }]
+            });
+        }
+
+        signer   = ethersProvider.getSigner();
+        userAddr = await signer.getAddress();
+        stakingRW = new ethers.Contract(STAKING_CA, STAKING_ABI, signer);
+
+        walletConnectedUI();
+        bindInjectedEvents();
+        attachBlockListener();
+
+        await refreshUserView();
+    }
+
+    async function connectWC(){
+        if (!window.WalletConnectEthereumProvider){
+            throw new Error("WalletConnect provider script missing");
+        }
+        wcProvider = await window.WalletConnectEthereumProvider.init({
+            projectId: WC_PID,
+            showQrModal: true,
+            chains:[CHAIN_ID],
+            optionalChains:[CHAIN_ID],
+            rpcMap:{[CHAIN_ID]:RPC},
+            metadata:{
+                name:"FINPEPE Staking",
+                description:"Stake FINPEPE",
+                url:location.origin,
+                icons:["https://walletconnect.com/walletconnect-logo.png"]
+            }
+        });
+
+        await wcProvider.connect({ chains:[CHAIN_ID], rpcMap:{[CHAIN_ID]:RPC} });
+
+        ethersProvider = new ethers.providers.Web3Provider(wcProvider,"any");
+        signer   = ethersProvider.getSigner();
+        userAddr = await signer.getAddress();
+        stakingRW = new ethers.Contract(STAKING_CA, STAKING_ABI, signer);
+
+        walletConnectedUI();
+        bindWCEvents();
+        attachBlockListener();
+
+        await refreshUserView();
+    }
+
+    function walletConnectedUI(){
+        if (!userAddr) return;
+        const short = userAddr.slice(0,6)+"…"+userAddr.slice(-4);
+        $("connectBtn").textContent = short;
+        $("disconnectBtn").disabled = false;
+        setStatusLine("Connected: " + short);
+    }
+
+    function walletDisconnectedUI(){
+        $("connectBtn").textContent = "Connect Wallet";
+        $("disconnectBtn").disabled = true;
+        setStatusLine("Not connected");
+    }
+
+    // injected wallet events
+    function bindInjectedEvents(){
+        if (!window.ethereum) return;
+        window.ethereum.on("accountsChanged", async (accs)=>{
+            if (!accs || !accs[0]) {
+                await disconnectWallet();
+                return;
+            }
+            userAddr = accs[0];
+            signer   = ethersProvider.getSigner();
+            stakingRW = new ethers.Contract(STAKING_CA, STAKING_ABI, signer);
+            walletConnectedUI();
+            await refreshUserView();
+        });
+        window.ethereum.on("chainChanged", ()=>location.reload());
+    }
+
+    // walletconnect events
+    function bindWCEvents(){
+        if (!wcProvider) return;
+        wcProvider.on("disconnect", async ()=>{
+            await disconnectWallet();
+        });
+        wcProvider.on("accountsChanged", async (accs)=>{
+            if (!accs || !accs[0]) {
+                await disconnectWallet();
+                return;
+            }
+            userAddr = accs[0];
+            signer   = ethersProvider.getSigner();
+            stakingRW = new ethers.Contract(STAKING_CA, STAKING_ABI, signer);
+            walletConnectedUI();
+            await refreshUserView();
+        });
+    }
+
+    function attachBlockListener(){
+        if (blockListenerAttached || !ethersProvider) return;
+        blockListenerAttached = true;
+        ethersProvider.on("block", async ()=>{
+            // throttle? keep it simple for now, just refresh balances
+            await refreshUserView();
+        });
+    }
+
+    async function disconnectWallet(){
+        // try WC cleanup
+        try {
+            await wcProvider?.disconnect?.();
+        }catch(e){}
+        wcProvider      = null;
+        ethersProvider  = null;
+        signer          = null;
+        stakingRW       = null;
+        userAddr        = null;
+
+        if (refreshTimer){
+            clearInterval(refreshTimer);
+            refreshTimer = null;
+        }
+
+        walletDisconnectedUI();
+        clearUserUI();
+    }
+
+    // ==========================
+    // Refresh user section
+    // ==========================
+    async function refreshUserView(){
+        if (!stakingRO){
+            stakingRO = new ethers.Contract(STAKING_CA, STAKING_ABI, roProvider);
+        }
+
+        if (!userAddr){
+            clearUserUI();
+            return;
+        }
+
+        try {
+            // get stake info
+            const [stakeInfo, pendBN, walletBN] = await Promise.all([
+                stakingRO.getStakeInfo(POOL_ID, userAddr),
+                stakingRO.pendingRewards(POOL_ID, userAddr),
+                stakeTokenRO.balanceOf(userAddr)
+            ]);
+
+            const amountBN    = stakeInfo[0];
+            const stakeTs     = Number(stakeInfo[3] || 0);
+            const youStaked   = fmtUnitsSafe(amountBN, stakeDec);
+            const walletBal   = fmtUnitsSafe(walletBN, stakeDec);
+            const pending     = fmtUnitsSafe(pendBN, stakeDec);
+
+            // update UI
+            $("youStaked").textContent      = fmtNum(youStaked, 0, 4)+" "+stakeSym;
+            $("walletBal").textContent      = fmtNum(walletBal, 0, 4)+" "+stakeSym;
+            $("pendingRewards").textContent = fmtNum(pending, 0, 6)+" "+stakeSym;
+
+            // share %
+            const tvlHuman = Number(fmtUnitsSafe(totalStaked, stakeDec));
+            const mineHuman= Number(youStaked||0);
+            let pct = "0%";
+            if (tvlHuman>0){
+                pct = ((mineHuman / tvlHuman) * 100).toFixed(4)+"%";
+            }
+            $("poolSharePct").textContent = pct;
+
+            // lock math
+            userUnlockTs = (lockEnabled && lockDurationSec>0 && stakeTs>0)
+                ? stakeTs + lockDurationSec
+                : 0;
+
+            if (userUnlockTs && nowSec() < userUnlockTs){
+                const left = userUnlockTs - nowSec();
+                $("unlockInfo").textContent      = "LOCKED";
+                $("unlockTimeHuman").textContent = tsToHuman(userUnlockTs)+" ("+fmtLeft(left)+" left)";
+                $("withdrawBtn").classList.add("disabled");
+                $("withdrawBtn").setAttribute("disabled","true");
+                $("withdrawHint").textContent = "Your stake is locked until it unlocks. You can't withdraw yet.";
+            } else {
+                $("unlockInfo").textContent      = lockEnabled ? "UNLOCKED" : "No Lock";
+                $("unlockTimeHuman").textContent = userUnlockTs ? tsToHuman(userUnlockTs) : "now";
+                $("withdrawBtn").classList.remove("disabled");
+                $("withdrawBtn").removeAttribute("disabled");
+                $("withdrawHint").textContent = "Withdraws all FINPEPE and claims rewards in one tx.";
+            }
+
+            // rewards rate estimate (rough)
+            // APR display might be "12.34% / year" -> pull number:
+            const aprText = $("aprDisplay").textContent || "";
+            const aprMatch = aprText.match(/([\d.]+)%/);
+            if (aprMatch){
+                const aprPct = Number(aprMatch[1] || 0);
+                if (aprPct>0 && mineHuman>0){
+                    const perDay  = mineHuman * (aprPct/100) / 365;
+                    const perHour = perDay / 24;
+                    const perSec  = perHour / 3600;
+                    $("estYourRates").textContent =
+                        "Est ~ "+fmtNum(perSec,0,6)+" "+stakeSym+"/sec\n" +
+                        "≈ "+fmtNum(perHour,0,4)+" "+stakeSym+"/hr\n" +
+                        "≈ "+fmtNum(perDay,0,4)+" "+stakeSym+"/day";
+                } else {
+                    $("estYourRates").textContent = "";
+                }
+            } else {
+                $("estYourRates").textContent = "";
+            }
+
+            $("lastSyncLine").textContent = "Synced " + new Date().toLocaleTimeString() + " (on-chain)";
+        } catch(err){
+            logMsg("refreshUserView ❌", err.message || err);
+        }
+    }
+
+    function clearUserUI(){
+        $("youStaked").textContent      = "0 "+stakeSym;
+        $("walletBal").textContent      = "0 "+stakeSym;
+        $("pendingRewards").textContent = "0 "+stakeSym;
+        $("poolSharePct").textContent   = "0%";
+        $("unlockInfo").textContent     = "";
+        $("unlockTimeHuman").textContent= "–";
+        $("estYourRates").textContent   = "";
+        $("lastSyncLine").textContent   = "Synced —";
+    }
+
+    // ==========================
+    // ACTIONS (stake / withdraw / claim)
+    // ==========================
+    async function doStake(){
+        if (!signer || !stakingRW){
+            setStatusLine("Connect wallet first");
+            return;
+        }
+        try {
+            const rawVal = $("stakeInput").value;
+            const amtBN  = parseUnitsSafe(rawVal, stakeDec);
+            if (amtBN.isZero()) throw new Error("Enter amount > 0");
+
+            // check wallet balance
+            const balBN = await stakeTokenRO.balanceOf(userAddr);
+            if (amtBN.gt(balBN)) throw new Error("Insufficient balance");
+
+            // approve if needed
+            const ercRW = new ethers.Contract(stakeTokenRO.address, ERC20_ABI, signer);
+            const allowanceBN = await ercRW.allowance(userAddr, STAKING_CA);
+            if (allowanceBN.lt(amtBN)){
+                logMsg("Approve…");
+                const txA = await ercRW.approve(STAKING_CA, amtBN);
+                logMsg("  hash:", txA.hash);
+                await txA.wait();
+                logMsg("  ✅ Approved");
+            }
+
+            // dry-run
+            await stakingRW.callStatic.stake(POOL_ID, amtBN, 0).catch(e=>{
+                throw new Error(e?.data?.message || e.message || "Stake reverted");
+            });
+
+            // stake
+            logMsg("Stake…");
+            const tx = await stakingRW.stake(POOL_ID, amtBN, 0);
+            logMsg("  hash:", tx.hash);
+            await tx.wait();
+            logMsg("  ✅ Stake confirmed");
+
+            // refresh
+            await loadPoolData();
+            await refreshUserView();
+            $("stakeInput").value = "";
+        } catch(err){
+            logMsg("stake ❌", err.message || err);
+        }
+    }
+
+    async function doWithdrawAll(){
+        if (!signer || !stakingRW){
+            setStatusLine("Connect wallet first");
+            return;
+        }
+        // Check lock first
+        if (userUnlockTs && nowSec() < userUnlockTs){
+            const left = userUnlockTs - nowSec();
+            logMsg("withdraw ❌ Locked for", fmtLeft(left));
+            return;
+        }
+        try {
+            // dry-run
+            await stakingRW.callStatic.withdrawAll(POOL_ID, 0).catch(e=>{
+                throw new Error(e?.data?.message || e.message || "Withdraw reverted");
+            });
+
+            logMsg("WithdrawAll…");
+            const tx = await stakingRW.withdrawAll(POOL_ID, 0);
+            logMsg("  hash:", tx.hash);
+            await tx.wait();
+            logMsg("  ✅ Withdraw confirmed");
+
+            await loadPoolData();
+            await refreshUserView();
+        } catch(err){
+            logMsg("withdraw ❌", err.message || err);
+        }
+    }
+
+    async function doClaim(){
+        if (!signer || !stakingRW){
+            setStatusLine("Connect wallet first");
+            return;
+        }
+        try {
+            // dry-run
+            await stakingRW.callStatic.claimRewards(POOL_ID).catch(e=>{
+                throw new Error(e?.data?.message || e.message || "Claim reverted");
+            });
+
+            logMsg("Claim…");
+            const tx = await stakingRW.claimRewards(POOL_ID);
+            logMsg("  hash:", tx.hash);
+            await tx.wait();
+            logMsg("  ✅ Rewards claimed");
+
+            await refreshUserView();
+        } catch(err){
+            logMsg("claim ❌", err.message || err);
+        }
+    }
+
+    // ==========================
+    // Event bindings
+    // ==========================
+    $("connectBtn").addEventListener("click", connectWallet);
+    $("disconnectBtn").addEventListener("click", disconnectWallet);
+    $("stakeBtn").addEventListener("click", doStake);
+    $("withdrawBtn").addEventListener("click", doWithdrawAll);
+    $("claimBtn").addEventListener("click", doClaim);
+    $("maxBtn").addEventListener("click", async ()=>{
+        try {
+            if (!userAddr || !stakeTokenRO){
+                $("stakeInput").value = "";
+                return;
+            }
+            const balBN = await stakeTokenRO.balanceOf(userAddr);
+            // subtract 1 wei so txs don't fail from rounding
+            const useBN = balBN.isZero()? balBN : balBN.sub(1);
+            $("stakeInput").value = ethers.utils.formatUnits(useBN, stakeDec);
+        } catch {
+            // ignore
+        }
+    });
+
+    // ==========================
+    // bootstrap
+    // ==========================
+    (async ()=>{
+        $("year").textContent = new Date().getFullYear();
+        await initReadonly();
+    })();
+    </script>
+</body>
+</html>

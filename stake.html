@@ -342,10 +342,9 @@
 
         <div class="wallet-actions">
             <a href="https://finpepe.com" class="button small">Home</a>
-            <a href="https://pepuswap.com//#/swap?inputCurrency=ETH&outputCurrency=0xf42afb01a4a981fa542076d1821a3f6704462ecf" target="_blank" class="button small">Buy $FINPEPE</a>			
-			<button id="connectBtn" class="button small" type="button">Connect Wallet</button>
+            <a href="https://pepuswap.com//#/swap?inputCurrency=ETH&outputCurrency=0xf42afb01a4a981fa542076d1821a3f6704462ecf" target="_blank" class="button small">Buy $FINPEPE</a>
+            <button id="connectBtn" class="button small" type="button">Connect Wallet</button>
             <button id="disconnectBtn" class="button small" type="button" disabled>Disconnect</button>
-
         </div>
 
         <div id="statusLine" class="status-line">Not connected</div>
@@ -446,14 +445,23 @@
                 </div>
                 <div id="pendingRewards" class="value-big">0 FINPEPE</div>
 
-                <div class="subline" id="estYourRates">
-                    <!-- filled by JS: per sec / per hour / per day -->
-                </div>
+                <!-- Pool-wide emissions -->
+                <div class="subline" id="emissionRates"></div>
+                <div class="subline" id="reserveLeft"></div>
+
+                <!-- Your estimated rates -->
+                <div class="subline" id="estYourRates"></div>
 
                 <div class="row-spacer"></div>
 
                 <button id="claimBtn" class="button full small" type="button">
                     Claim Rewards
+                </button>
+
+                <div class="row-spacer"></div>
+
+                <button id="restakeBtn" class="button full small" type="button">
+                    Restake Rewards
                 </button>
 
                 <div class="subline" id="lastSyncLine" style="margin-top:10px;">
@@ -483,13 +491,13 @@
     <script src="walletconnect.min.js"></script>
     <script>
     // ==========================
-    // CONFIG (edit these)
+    // CONFIG
     // ==========================
-    const RPC        = "https://rpc-pepu-v2-mainnet-0.t.conduit.xyz";   // same RPC as before
-    const CHAIN_ID   = 97741;                                            // chain id
-    const STAKING_CA = "0xa2b34d8d64F421C3D658Da11c2c865079ff8346E";     // staking contract
-    const WC_PID     = "6e2df48125e4f633b093361ba0a87c81";               // WalletConnect project id
-    const POOL_ID    = 4;                                                // single pool only
+    const RPC        = "https://rpc-pepu-v2-mainnet-0.t.conduit.xyz";
+    const CHAIN_ID   = 97741;
+    const STAKING_CA = "0xa2b34d8d64F421C3D658Da11c2c865079ff8346E"; // ToshStakeEmissions
+    const WC_PID     = "6e2df48125e4f633b093361ba0a87c81";
+    const POOL_ID    = 5;
 
     // ==========================
     // DOM helpers
@@ -539,7 +547,7 @@
     }
 
     // ==========================
-    // ABIs (trimmed)
+    // ABIs (trimmed to what we use)
     // ==========================
     const ERC20_ABI = [
         "function name() view returns (string)",
@@ -560,11 +568,12 @@
 
         "function stake(uint256 poolId, uint256 amount, uint256 minOut)",
         "function withdrawAll(uint256 poolId, uint256 minOut)",
-        "function claimRewards(uint256 poolId)"
+        "function claimRewards(uint256 poolId)",
+        "function claimAndRestake(uint256 poolId, uint256 minCredited)"
     ];
 
     // ==========================
-    // Providers / contracts / state
+    // Providers / state
     // ==========================
     const roProvider = new ethers.providers.JsonRpcBatchProvider(RPC);
     roProvider.pollingInterval = 4000;
@@ -577,20 +586,23 @@
     let stakingRO       = null;
     let stakingRW       = null;
     let stakeTokenRO    = null;
+    let rewardTokenRO   = null;
 
     // pool / token meta
     let stakeSym    = "FINPEPE";
     let stakeDec    = 18;
+    let rewardSym   = "FINPEPE";
+    let rewardDec   = 18;
     let totalStaked = ethers.BigNumber.from(0);
+    let rewardPerSecFloat = 0; // in reward token units
 
     // lock + timing
     let lockDurationSec = 0;
     let lockEnabled     = false;
+    let poolAllowRestake = false;
     let userUnlockTs    = 0;
     let poolEndTs       = 0;
 
-    // refresh timers
-    let refreshTimer = null;
     let blockListenerAttached = false;
 
     // ==========================
@@ -599,7 +611,7 @@
     async function initReadonly(){
         stakingRO = new ethers.Contract(STAKING_CA, STAKING_ABI, roProvider);
         await loadPoolData();
-        await refreshUserView(); // w/out wallet (will just zero UI)
+        await refreshUserView(); // w/out wallet (zero UI)
     }
 
     // ==========================
@@ -619,13 +631,15 @@
                 stakingRO.secondsRemaining(POOL_ID).catch(()=>ethers.BigNumber.from(0))
             ]);
 
-            const stakingTokenAddr = core[0]; // stakingToken
-            const rewardRateBN     = core[2]; // rewardRate/sec
-            const reservedBN       = policy[6]; // reserved reward left
-            totalStaked            = policy[4]; // totalStaked
+            const stakingTokenAddr = core[0];
+            const rewardTokenAddr  = core[1];
+            const rewardRateBN     = core[2];
+            const reservedBN       = policy[6];
+            totalStaked            = policy[4];
 
             lockDurationSec        = Number(policy[0] || 0);
             lockEnabled            = Boolean(policy[1]);
+            poolAllowRestake       = Boolean(policy[2]);
 
             // estimate pool end
             let secLeft = Number(secRemainingBN.toString());
@@ -639,26 +653,26 @@
             poolEndTs = secLeft>0 ? (nowSec()+secLeft) : 0;
 
             // token metadata
-            stakeTokenRO = new ethers.Contract(stakingTokenAddr, ERC20_ABI, roProvider);
-            try {
-                stakeSym = await stakeTokenRO.symbol();
-            } catch {
-                try { stakeSym = await stakeTokenRO.name(); } catch {}
-            }
-            try {
-                stakeDec = await stakeTokenRO.decimals();
-            } catch {
-                stakeDec = 18;
-            }
+            stakeTokenRO  = new ethers.Contract(stakingTokenAddr, ERC20_ABI, roProvider);
+            rewardTokenRO = new ethers.Contract(rewardTokenAddr, ERC20_ABI, roProvider);
 
-            // UI: APR est
+            try { stakeSym = await stakeTokenRO.symbol(); }
+            catch { try { stakeSym = await stakeTokenRO.name(); } catch {} }
+
+            try { rewardSym = await rewardTokenRO.symbol(); }
+            catch { try { rewardSym = await rewardTokenRO.name(); } catch {} }
+
+            try { stakeDec = await stakeTokenRO.decimals(); } catch { stakeDec = 18; }
+            try { rewardDec = await rewardTokenRO.decimals(); } catch { rewardDec = 18; }
+
+            // APR display (basis points / 100)
             let aprPct = Number(apyBpsBN.toString()) / 100;
             if (!isFinite(aprPct)){ aprPct = 0; }
             $("aprDisplay").textContent = (aprPct>0)
                 ? aprPct.toFixed(2) + "% / year"
                 : "—";
 
-            // Total staked
+            // Total staked (principal)
             $("totalStaked").textContent =
                 fmtNum(ethers.utils.formatUnits(totalStaked, stakeDec), 0, 4) +
                 " " + stakeSym;
@@ -667,6 +681,31 @@
             $("poolTimeLeft").textContent =
                 poolEndTs>0 ? (fmtLeft(poolEndTs - nowSec()) + " left")
                             : "Ended";
+
+            // Emissions (reward token)
+            rewardPerSecFloat = Number(ethers.utils.formatUnits(rewardRateBN, rewardDec));
+            const perDay = rewardPerSecFloat * 86400;
+            $("emissionRates").textContent =
+                `• ${fmtNum(perDay,0,4)} ${rewardSym}/day (${fmtNum(rewardPerSecFloat,0,6)} /sec)`;
+
+            // Reserve left
+            const reserveHuman = Number(ethers.utils.formatUnits(reservedBN, rewardDec));
+            $("reserveLeft").textContent =
+                `• Reserve left: ${fmtNum(reserveHuman,0,4)} ${rewardSym}`;
+
+            // Restake pool-level availability
+            const restakeBtn = $("restakeBtn");
+            if (restakeBtn){
+                if (poolAllowRestake){
+                    restakeBtn.classList.remove("disabled");
+                    restakeBtn.removeAttribute("disabled");
+                    restakeBtn.textContent = "Restake Rewards";
+                } else {
+                    restakeBtn.classList.add("disabled");
+                    restakeBtn.setAttribute("disabled","true");
+                    restakeBtn.textContent = "Restake Disabled";
+                }
+            }
 
         } catch (err){
             logMsg("loadPoolData ❌", err.message || err);
@@ -677,7 +716,6 @@
     // Connect wallet
     // ==========================
     async function connectWallet(){
-        // try injected first
         try {
             await connectInjected();
             return;
@@ -697,7 +735,6 @@
         await ethersProvider.send("eth_requestAccounts", []);
         const net = await ethersProvider.getNetwork();
         if (Number(net.chainId) !== CHAIN_ID){
-            // ask wallet to switch
             await window.ethereum.request({
                 method: "wallet_switchEthereumChain",
                 params: [{ chainId: "0x" + CHAIN_ID.toString(16) }]
@@ -711,7 +748,6 @@
         walletConnectedUI();
         bindInjectedEvents();
         attachBlockListener();
-
         await refreshUserView();
     }
 
@@ -743,7 +779,6 @@
         walletConnectedUI();
         bindWCEvents();
         attachBlockListener();
-
         await refreshUserView();
     }
 
@@ -761,7 +796,6 @@
         setStatusLine("Not connected");
     }
 
-    // injected wallet events
     function bindInjectedEvents(){
         if (!window.ethereum) return;
         window.ethereum.on("accountsChanged", async (accs)=>{
@@ -778,7 +812,6 @@
         window.ethereum.on("chainChanged", ()=>location.reload());
     }
 
-    // walletconnect events
     function bindWCEvents(){
         if (!wcProvider) return;
         wcProvider.on("disconnect", async ()=>{
@@ -801,26 +834,20 @@
         if (blockListenerAttached || !ethersProvider) return;
         blockListenerAttached = true;
         ethersProvider.on("block", async ()=>{
-            // throttle? keep it simple for now, just refresh balances
             await refreshUserView();
         });
     }
 
     async function disconnectWallet(){
-        // try WC cleanup
         try {
             await wcProvider?.disconnect?.();
         }catch(e){}
+
         wcProvider      = null;
         ethersProvider  = null;
         signer          = null;
         stakingRW       = null;
         userAddr        = null;
-
-        if (refreshTimer){
-            clearInterval(refreshTimer);
-            refreshTimer = null;
-        }
 
         walletDisconnectedUI();
         clearUserUI();
@@ -840,7 +867,6 @@
         }
 
         try {
-            // get stake info
             const [stakeInfo, pendBN, walletBN] = await Promise.all([
                 stakingRO.getStakeInfo(POOL_ID, userAddr),
                 stakingRO.pendingRewards(POOL_ID, userAddr),
@@ -851,16 +877,42 @@
             const stakeTs     = Number(stakeInfo[3] || 0);
             const youStaked   = fmtUnitsSafe(amountBN, stakeDec);
             const walletBal   = fmtUnitsSafe(walletBN, stakeDec);
-            const pending     = fmtUnitsSafe(pendBN, stakeDec);
+            const pending     = fmtUnitsSafe(pendBN, rewardDec);
 
-            // update UI
+            // UI: balances
             $("youStaked").textContent      = fmtNum(youStaked, 0, 4)+" "+stakeSym;
             $("walletBal").textContent      = fmtNum(walletBal, 0, 4)+" "+stakeSym;
-            $("pendingRewards").textContent = fmtNum(pending, 0, 6)+" "+stakeSym;
+            $("pendingRewards").textContent = fmtNum(pending, 0, 6)+" "+rewardSym;
+
+            // Enable/disable reward buttons
+            const hasRewards = Number(pending) > 0;
+            const claimBtn   = $("claimBtn");
+            const restakeBtn = $("restakeBtn");
+
+            if (claimBtn){
+                if (hasRewards){
+                    claimBtn.classList.remove("disabled");
+                    claimBtn.removeAttribute("disabled");
+                } else {
+                    claimBtn.classList.add("disabled");
+                    claimBtn.setAttribute("disabled","true");
+                }
+            }
+            if (restakeBtn){
+                if (hasRewards && poolAllowRestake){
+                    restakeBtn.classList.remove("disabled");
+                    restakeBtn.removeAttribute("disabled");
+                    restakeBtn.textContent = "Restake Rewards";
+                } else {
+                    restakeBtn.classList.add("disabled");
+                    restakeBtn.setAttribute("disabled","true");
+                    restakeBtn.textContent = poolAllowRestake ? "No Rewards to Restake" : "Restake Disabled";
+                }
+            }
 
             // share %
-            const tvlHuman = Number(fmtUnitsSafe(totalStaked, stakeDec));
-            const mineHuman= Number(youStaked||0);
+            const tvlHuman  = Number(fmtUnitsSafe(totalStaked, stakeDec));
+            const mineHuman = Number(fmtUnitsSafe(amountBN, stakeDec));
             let pct = "0%";
             if (tvlHuman>0){
                 pct = ((mineHuman / tvlHuman) * 100).toFixed(4)+"%";
@@ -887,23 +939,17 @@
                 $("withdrawHint").textContent = "Withdraws all FINPEPE and claims rewards in one tx.";
             }
 
-            // rewards rate estimate (rough)
-            // APR display might be "12.34% / year" -> pull number:
-            const aprText = $("aprDisplay").textContent || "";
-            const aprMatch = aprText.match(/([\d.]+)%/);
-            if (aprMatch){
-                const aprPct = Number(aprMatch[1] || 0);
-                if (aprPct>0 && mineHuman>0){
-                    const perDay  = mineHuman * (aprPct/100) / 365;
-                    const perHour = perDay / 24;
-                    const perSec  = perHour / 3600;
-                    $("estYourRates").textContent =
-                        "Est ~ "+fmtNum(perSec,0,6)+" "+stakeSym+"/sec\n" +
-                        "≈ "+fmtNum(perHour,0,4)+" "+stakeSym+"/hr\n" +
-                        "≈ "+fmtNum(perDay,0,4)+" "+stakeSym+"/day";
-                } else {
-                    $("estYourRates").textContent = "";
-                }
+            // your estimated rewards using rewardRate + share
+            if (tvlHuman > 0 && mineHuman > 0 && rewardPerSecFloat > 0){
+                const share    = mineHuman / tvlHuman;
+                const perSec   = rewardPerSecFloat * share;
+                const perHour  = perSec * 3600;
+                const perDay   = perSec * 86400;
+
+                $("estYourRates").textContent =
+                    `· ${fmtNum(perSec,0,6)} ${rewardSym}/s\n` +
+                    `· ${fmtNum(perHour,0,4)} ${rewardSym}/hr\n` +
+                    `· ${fmtNum(perDay,0,4)} ${rewardSym}/day`;
             } else {
                 $("estYourRates").textContent = "";
             }
@@ -917,16 +963,27 @@
     function clearUserUI(){
         $("youStaked").textContent      = "0 "+stakeSym;
         $("walletBal").textContent      = "0 "+stakeSym;
-        $("pendingRewards").textContent = "0 "+stakeSym;
+        $("pendingRewards").textContent = "0 "+rewardSym;
         $("poolSharePct").textContent   = "0%";
         $("unlockInfo").textContent     = "";
         $("unlockTimeHuman").textContent= "–";
         $("estYourRates").textContent   = "";
         $("lastSyncLine").textContent   = "Synced —";
+
+        const claimBtn   = $("claimBtn");
+        const restakeBtn = $("restakeBtn");
+        if (claimBtn){
+            claimBtn.classList.add("disabled");
+            claimBtn.setAttribute("disabled","true");
+        }
+        if (restakeBtn){
+            restakeBtn.classList.add("disabled");
+            restakeBtn.setAttribute("disabled","true");
+        }
     }
 
     // ==========================
-    // ACTIONS (stake / withdraw / claim)
+    // ACTIONS
     // ==========================
     async function doStake(){
         if (!signer || !stakingRW){
@@ -938,11 +995,9 @@
             const amtBN  = parseUnitsSafe(rawVal, stakeDec);
             if (amtBN.isZero()) throw new Error("Enter amount > 0");
 
-            // check wallet balance
             const balBN = await stakeTokenRO.balanceOf(userAddr);
             if (amtBN.gt(balBN)) throw new Error("Insufficient balance");
 
-            // approve if needed
             const ercRW = new ethers.Contract(stakeTokenRO.address, ERC20_ABI, signer);
             const allowanceBN = await ercRW.allowance(userAddr, STAKING_CA);
             if (allowanceBN.lt(amtBN)){
@@ -953,19 +1008,16 @@
                 logMsg("  ✅ Approved");
             }
 
-            // dry-run
             await stakingRW.callStatic.stake(POOL_ID, amtBN, 0).catch(e=>{
                 throw new Error(e?.data?.message || e.message || "Stake reverted");
             });
 
-            // stake
             logMsg("Stake…");
             const tx = await stakingRW.stake(POOL_ID, amtBN, 0);
             logMsg("  hash:", tx.hash);
             await tx.wait();
             logMsg("  ✅ Stake confirmed");
 
-            // refresh
             await loadPoolData();
             await refreshUserView();
             $("stakeInput").value = "";
@@ -979,14 +1031,12 @@
             setStatusLine("Connect wallet first");
             return;
         }
-        // Check lock first
         if (userUnlockTs && nowSec() < userUnlockTs){
             const left = userUnlockTs - nowSec();
             logMsg("withdraw ❌ Locked for", fmtLeft(left));
             return;
         }
         try {
-            // dry-run
             await stakingRW.callStatic.withdrawAll(POOL_ID, 0).catch(e=>{
                 throw new Error(e?.data?.message || e.message || "Withdraw reverted");
             });
@@ -1010,7 +1060,6 @@
             return;
         }
         try {
-            // dry-run
             await stakingRW.callStatic.claimRewards(POOL_ID).catch(e=>{
                 throw new Error(e?.data?.message || e.message || "Claim reverted");
             });
@@ -1027,6 +1076,33 @@
         }
     }
 
+    async function doRestake(){
+        if (!signer || !stakingRW){
+            setStatusLine("Connect wallet first");
+            return;
+        }
+        if (!poolAllowRestake){
+            logMsg("restake ❌ Restake disabled for this pool");
+            return;
+        }
+        try {
+            await stakingRW.callStatic.claimAndRestake(POOL_ID, 0).catch(e=>{
+                throw new Error(e?.data?.message || e.message || "Restake reverted");
+            });
+
+            logMsg("Restake rewards…");
+            const tx = await stakingRW.claimAndRestake(POOL_ID, 0);
+            logMsg("  hash:", tx.hash);
+            await tx.wait();
+            logMsg("  ✅ Rewards restaked into your stake");
+
+            await loadPoolData();
+            await refreshUserView();
+        } catch(err){
+            logMsg("restake ❌", err.message || err);
+        }
+    }
+
     // ==========================
     // Event bindings
     // ==========================
@@ -1035,6 +1111,7 @@
     $("stakeBtn").addEventListener("click", doStake);
     $("withdrawBtn").addEventListener("click", doWithdrawAll);
     $("claimBtn").addEventListener("click", doClaim);
+    $("restakeBtn").addEventListener("click", doRestake);
     $("maxBtn").addEventListener("click", async ()=>{
         try {
             if (!userAddr || !stakeTokenRO){
@@ -1042,7 +1119,6 @@
                 return;
             }
             const balBN = await stakeTokenRO.balanceOf(userAddr);
-            // subtract 1 wei so txs don't fail from rounding
             const useBN = balBN.isZero()? balBN : balBN.sub(1);
             $("stakeInput").value = ethers.utils.formatUnits(useBN, stakeDec);
         } catch {
