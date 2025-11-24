@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google tag (gtag.js) – optional, keep or remove -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-D26T2KVGGV"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-D26T2KVGGV');
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stakers — $FINPEPE Pool</title>
+    <meta name="color-scheme" content="dark" />
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+
+    <style>
+        /* ====== GLOBAL THEME (matches Finnish Pepe site) ====== */
+        :root {
+            --pepe-cyan: #00ccff;
+            --pepe-cyan-dark: #0055aa;
+            --glass-bg: rgba(40, 38, 38, 0.8);
+            --glass-card: rgba(20, 20, 20, 0.55);
+            --glass-border: rgba(255,255,255,0.15);
+            --text-main: #fff;
+            --text-dim: #9ca3af;
+            --radius-lg: 12px;
+            --radius-xl: 16px;
+            --shadow-card: 0 10px 30px rgba(0,0,0,.4);
+        }
+
+        /* Body + bg */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-image: url('https://finpepe.com/background-image.png'); /* <- same background as main site */
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            animation: fadeInBody 1s ease-in-out;
+        }
+
+        @keyframes fadeInBody {
+            from { opacity: 0; }
+            to   { opacity: 1; }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes scaleUp {
+            from { transform: scale(0.9); opacity: 0; }
+            to   { transform: scale(1); opacity: 1; }
+        }
+
+        /* ====== HEADER / HERO ====== */
+        .header {
+            text-align: center;
+            padding: 40px 20px 24px;
+            background: rgba(40, 38, 38, 0.8);
+            backdrop-filter: blur(5px);
+            animation: fadeIn 1.5s ease-in-out;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .header-toprow {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 16px;
+            align-items: flex-start;
+        }
+
+        .title-block {
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: clamp(44px, 3vw, 60px);
+            font-family: 'Bebas Neue', sans-serif;
+            text-transform: uppercase;
+            color: var(--pepe-cyan);
+            letter-spacing: 2px;
+            line-height: 1;
+            margin: 0;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        .header p {
+            font-size: 18px;
+            font-weight: 600;
+            color: #ffffff;
+            margin-top: 8px;
+            margin-bottom: 8px;
+            animation: fadeIn 2.25s ease-in-out;
+        }
+
+        .status-line {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-dim);
+            margin-top: 8px;
+            text-align: center;
+            min-height: 1.2em;
+        }
+
+        /* ====== BUTTONS ====== */
+        .button {
+            display: inline-block;
+            padding: 14px 24px;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: var(--radius-lg);
+            font-family: 'Bebas Neue', sans-serif;
+            background: linear-gradient(45deg, var(--pepe-cyan), var(--pepe-cyan-dark));
+            color: white;
+            text-decoration: none;
+            text-align: center;
+            line-height: 1.1;
+            cursor: pointer;
+            border: 0;
+            box-shadow: 0 6px 15px rgba(0, 255, 255, 0.3);
+            transition: all 0.2s ease-in-out;
+            user-select: none;
+        }
+
+        .button.small {
+            padding: 10px 18px;
+            font-size: 18px;
+        }
+
+        .button.full {
+            width: 100%;
+        }
+
+        .button[disabled],
+        .button.disabled {
+            opacity: .5;
+            cursor: not-allowed;
+            filter: grayscale(0.5);
+        }
+
+        .button:hover:not([disabled]) {
+            background: linear-gradient(45deg, var(--pepe-cyan-dark), var(--pepe-cyan));
+            transform: scale(1.07);
+            box-shadow: 0 8px 20px rgba(0, 255, 255, 0.4);
+        }
+
+        .wallet-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 14px;
+            animation: fadeIn 2.5s ease-in-out;
+        }
+
+        /* ====== MAIN WRAPPER ====== */
+        .container {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 20px;
+            background: var(--glass-bg);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-card);
+            animation: scaleUp 1.2s ease-in-out;
+            width: 80%;
+        }
+
+        .section-headline {
+            font-size: 32px;
+            font-family: 'Bebas Neue', sans-serif;
+            color: var(--pepe-cyan);
+            margin: 0 0 10px;
+            text-align: center;
+            letter-spacing: 1px;
+        }
+
+        .section-desc {
+            text-align: center;
+            color: var(--text-main);
+            font-size: 16px;
+            font-weight: 500;
+            max-width: 60ch;
+            margin: 0 auto 24px;
+        }
+
+        /* glass card */
+        .card {
+            background: var(--glass-card);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            box-shadow: var(--shadow-card);
+            position: relative;
+            animation: fadeIn 1.4s ease-in-out;
+        }
+
+        .card h3 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 26px;
+            margin: 0 0 12px;
+            line-height: 1;
+            letter-spacing: 1px;
+            color: var(--pepe-cyan);
+            text-transform: uppercase;
+        }
+
+        .label-row {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-dim);
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .stat-line {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-main);
+            margin: 4px 0;
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .dim {
+            color: var(--text-dim);
+        }
+
+        .subline {
+            font-size: 13px;
+            color: var(--text-dim);
+            font-weight: 500;
+            line-height: 1.4;
+            white-space: pre-line;
+            word-break: break-word;
+        }
+
+        .row-spacer {
+            height: 14px;
+        }
+
+        /* ====== TABLE STYLES (adapted to FINPEPE glass theme) ====== */
+        .table-wrap {
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 14px;
+            background: rgba(5,5,5,0.4);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+        thead th {
+            position: sticky;
+            top: 0;
+            background: rgba(15, 23, 42, 0.95);
+            border-bottom: 1px solid var(--glass-border);
+            text-align: left;
+            font-size: 12px;
+            color: #cddbf7;
+            padding: 10px;
+            font-weight: 600;
+            z-index: 2;
+        }
+
+        tbody td {
+            padding: 10px;
+            border-bottom: 1px dashed rgba(255,255,255,0.08);
+            font-variant-numeric: tabular-nums;
+            font-size: 13px;
+        }
+
+        tbody tr:hover {
+            background: rgba(15, 23, 42, 0.7);
+        }
+
+        .addr {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        }
+
+        .right {
+            text-align: right;
+        }
+
+        .scroll {
+            max-height: 520px;
+            overflow: auto;
+        }
+
+        a.addr-link {
+            color: var(--pepe-cyan);
+            text-decoration: underline dotted;
+            text-underline-offset: 3px;
+        }
+
+        a.addr-link:hover {
+            color: var(--pepe-cyan-dark);
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 700;
+            background: linear-gradient(180deg, #ffe198, #d6a649);
+            color: #1b1400;
+            margin-left: 8px;
+        }
+
+        .spinner {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            border: 2px solid rgba(255,255,255,0.25);
+            border-top-color: var(--pepe-cyan);
+            animation: spin 800ms linear infinite;
+            display: inline-block;
+            vertical-align: -3px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* ====== FOOTER ====== */
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            font-size: 14px;
+            animation: fadeIn 2s ease-in-out;
+        }
+        .footer small {
+            display: block;
+            font-size: 12px;
+            color: var(--text-dim);
+            margin-top: 4px;
+        }
+
+        @media (max-width: 480px) {
+            .button { font-size: 18px; padding: 12px 20px; }
+            .header h1 { font-size: 40px; }
+            .header p { font-size: 16px; }
+            .container { width: 92%; padding: 16px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER / HERO -->
+    <header class="header">
+        <div class="header-toprow">
+            <div class="title-block">
+                <h1>$FINPEPE Stakers</h1>
+                <p>📋 Live on-chain stakers list for the FINPEPE staking pool.</p>
+            </div>
+        </div>
+
+        <div class="wallet-actions">
+            <a href="https://finpepe.com" id="home" class="button small">Home</a>
+            <a href="/stake.html" class="button small">Staking Page</a>
+            <button id="refresh" class="button small" type="button">Refresh</button>
+            <button id="exportHS" class="button small" type="button" title="Export holders + stakers CSV">
+                Export CSV
+            </button>
+        </div>
+
+        <div id="statusLine" class="status-line">
+            Pool #<span id="poolIdLabel">5</span> · <span id="symPair">—</span>
+        </div>
+    </header>
+
+    <!-- MAIN BODY -->
+    <main class="container">
+        <h2 class="section-headline">Stakers Dashboard</h2>
+        <p class="section-desc">
+            This page shows all active stakers for the FINPEPE pool, including amounts staked,
+            unclaimed rewards, and first stake timestamp. Data is fetched directly from the Pepu chain.
+        </p>
+
+        <section class="card">
+            <h3>Pool Overview</h3>
+
+            <div class="label-row">
+                <span class="dim">Pool</span>
+                <span>#<span id="poolIdLabelCard">5</span> <span id="symPairBadge" class="badge">—</span></span>
+            </div>
+
+            <div class="row-spacer"></div>
+
+            <div class="stat-line">
+                <span class="dim">Total Stakers</span>
+                <span id="kCount">0</span>
+            </div>
+            <div class="stat-line">
+                <span class="dim">Total Staked</span>
+                <span id="kSumStake">0</span>
+            </div>
+            <div class="stat-line">
+                <span class="dim">Total Unclaimed Rewards</span>
+                <span id="kSumPending">0</span>
+            </div>
+
+            <div class="row-spacer"></div>
+
+            <div class="label-row">
+                <span class="dim">Scan Status</span>
+                <span id="scanState">Idle</span>
+            </div>
+
+            <div class="row-spacer"></div>
+
+            <div class="table-wrap">
+                <div class="scroll">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="min-width: 160px;">Address</th>
+                                <th class="right">Staked</th>
+                                <th class="right">Unclaimed</th>
+                                <th class="right" style="min-width: 120px;">Stake Date</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody">
+                            <tr>
+                                <td colspan="4" class="dim" style="padding:12px;">
+                                    No data yet. Click “Refresh” to scan stakers.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div>Disclaimer: $FINPEPE is a meme coin. Staking and participation carry risk. This is not financial advice.</div>
+        <small>© <span id="year"></span> Finnish Pepe. All rights reserved.</small>
+    </footer>
+
+    <!-- scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+    <script>
+    /* ====== CONFIG ====== */
+    const RPC_URL   = "https://rpc-pepu-v2-mainnet-0.t.conduit.xyz";
+    const STAKING   = "0xa2b34d8d64F421C3D658Da11c2c865079ff8346E";
+    const POOL_ID   = 5; // fixed pool
+    const PEPUSCAN_ADDR = "https://pepuscan.com/address/";
+
+    /* Explorer + proxy (for holders during CSV export) */
+    const EXPLORER_BASE = "https://explorer-pepu-v2-mainnet-0.t.conduit.xyz";
+    const PROXY_ORIGIN  = "https://odd-feather-f250.toshtech777.workers.dev/";
+    const prox = (url) => \`\${PROXY_ORIGIN}?url=\${encodeURIComponent(url)}&t=\${Date.now()}\`;
+
+    /* optional: from-block hint (0 = auto via PoolCreated) */
+    const FROM_BLOCK_HINT = 0;
+    const BLOCK_STEP = 50_000;
+
+    /* ====== ABIs ====== */
+    const STAKING_ABI = [
+      // views
+      "function getPoolCore(uint256) view returns (address stakingToken, address rewardToken, uint256 rewardRate, uint256 periodFinish, uint256 lastUpdateTime, uint256 rewardPerTokenStored)",
+      "function getPoolPolicy(uint256) view returns (uint256 lockDuration, bool lockStaking, bool allowRestake, bool active, uint256 totalStaked, uint256 startTimestamp, uint256 reserved, bytes32 tag)",
+      "function getStakeInfo(uint256,address) view returns (uint256 amount, uint256 unclaimed, uint256 userRewardPerTokenPaid, uint256 stakeTs, uint256 exitRequestTs)",
+      "function pendingRewards(uint256,address) view returns (uint256)",
+      // events used to enumerate stakers
+      "event PoolCreated(uint256 indexed poolId, bytes32 indexed tag, address stakingToken, address rewardToken, uint256 lockDuration, bool lockStaking, bool allowRestake)",
+      "event Staked(uint256 indexed poolId, address indexed user, uint256 amountCredited, uint256 minCredited)",
+      "event Unstaked(uint256 indexed poolId, address indexed user, uint256 amountSent, uint256 minReceived)",
+      "event RewardPaid(uint256 indexed poolId, address indexed user, uint256 amount)",
+      "event RewardRestaked(uint256 indexed poolId, address indexed user, uint256 amount)"
+    ];
+
+    const ERC20_MIN = [
+      "function decimals() view returns (uint8)",
+      "function symbol() view returns (string)",
+      "function name() view returns (string)"
+    ];
+
+    /* ====== Export helpers / state ====== */
+    let STAKER_MAP = new Map(); // addr(lower) -> BigNumber (staked raw)
+
+    const $ = (id)=>document.getElementById(id);
+    const fmtUnits = (bn,dec)=> ethers.utils.formatUnits(bn||"0", dec||18);
+    const pLimit = (n)=>{
+      let active=0,q=[];
+      const next=()=>{
+        if(active>=n || !q.length) return;
+        active++;
+        const {fn,rs,rj}=q.shift();
+        fn().then(v=>{active--;rs(v);next();}).catch(e=>{active--;rj(e);next();});
+      };
+      return fn=>new Promise((rs,rj)=>{ q.push({fn,rs,rj}); next(); });
+    };
+
+    const toChecksum = (addr) => {
+      try { return ethers.utils.getAddress(addr); } catch { return addr; }
+    };
+
+    /* paginate Conduit explorer holders endpoint */
+    async function fetchAllHoldersForToken(tokenAddr) {
+      const urlBase = \`\${EXPLORER_BASE.replace(/\\/$/,'')}/api/v2/tokens/\${tokenAddr}/holders\`;
+      let params = null;
+      const out = [];
+
+      while (true) {
+        const qs = params ? ("?" + new URLSearchParams(params)) : "";
+        const target = prox(urlBase + qs);
+        const resp = await fetch(target, { mode: "cors" });
+        if (!resp.ok) throw new Error(\`Explorer error \${resp.status}\`);
+        const data = await resp.json();
+
+        for (const it of (data.items || [])) {
+          if (it?.address?.is_contract) continue;
+          const a = it?.address?.hash;
+          const v = it?.value ?? "0";
+          if (!a) continue;
+          out.push({ address: toChecksum(a), raw: ethers.BigNumber.from(v) });
+        }
+        if (!data.next_page_params) break;
+        params = data.next_page_params;
+      }
+      return out;
+    }
+
+    /* download a text file as <filename> */
+    function downloadText(filename, text, mime="text/csv;charset=utf-8;") {
+      const blob = new Blob([text], { type: mime });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      URL.revokeObjectURL(link.href);
+      link.remove();
+    }
+
+    let stakeDec=18, rewardDec=18, stakeSym="STAKE", rewardSym="REWARD";
+    const ro = new ethers.providers.JsonRpcBatchProvider(RPC_URL);
+    let stakingRO = new ethers.Contract(STAKING, STAKING_ABI, ro);
+
+    async function exportHoldersAndStakersCSV() {
+      const btn = $("exportHS");
+      const old = btn.textContent;
+      btn.disabled = true;
+      btn.textContent = "Exporting…";
+      const prevState = $("scanState").innerHTML;
+      $("scanState").innerHTML = \`Exporting CSV … <span class="spinner"></span>\`;
+
+      try {
+        // get staking token for current pool
+        const core = await stakingRO.getPoolCore(POOL_ID);
+        const stakingToken = core[0];
+
+        // 1) holders from explorer
+        const holders = await fetchAllHoldersForToken(stakingToken);
+        const holderMap = new Map(); // lower(addr) -> BigNumber raw
+        holders.forEach(h => holderMap.set(h.address.toLowerCase(), h.raw));
+
+        // 2) stakers already scanned -> STAKER_MAP (lower(addr) -> BigNumber)
+        const keys = new Set([...holderMap.keys(), ...STAKER_MAP.keys()]);
+
+        // 3) compose rows, sum & sort by total desc
+        const rows = [];
+        for (const k of keys) {
+          const addr   = toChecksum(k);
+          const hold   = holderMap.get(k) || ethers.BigNumber.from(0);
+          const staked = STAKER_MAP.get(k) || ethers.BigNumber.from(0);
+          const total  = hold.add(staked);
+          rows.push({ address: addr, hold, staked, total });
+        }
+        rows.sort((a,b) => b.total.gt(a.total) ? 1 : -1);
+
+        const head = [
+          "address",
+          \`holding_\${stakeSym}\`,
+          \`staked_\${stakeSym}\`,
+          \`total_\${stakeSym}\`,
+          "holding_raw",
+          "staked_raw",
+          "total_raw"
+        ];
+        const lines = [head.join(",")];
+
+        for (const r of rows) {
+          const holding = fmtUnits(r.hold,   stakeDec);
+          const staked  = fmtUnits(r.staked, stakeDec);
+          const total   = fmtUnits(r.total,  stakeDec);
+          lines.push([
+            r.address,
+            holding,
+            staked,
+            total,
+            r.hold.toString(),
+            r.staked.toString(),
+            r.total.toString()
+          ].join(","));
+        }
+
+        const fname = \`holders_stakers_pool\${POOL_ID}.csv\`;
+        downloadText(fname, lines.join("\\n"));
+
+        $("scanState").textContent = \`CSV exported (\${rows.length} addresses)\`;
+      } catch (err) {
+        console.error(err);
+        // graceful fallback: stakers-only file if holders API blocked by CORS
+        if (STAKER_MAP.size > 0) {
+          const rows = [...STAKER_MAP.entries()].map(([k, v]) => ({
+            address: toChecksum(k), hold: ethers.BigNumber.from(0),
+            staked: v, total: v
+          }));
+          rows.sort((a,b) => b.total.gt(a.total) ? 1 : -1);
+
+          const head = [
+            "address",
+            \`holding_\${stakeSym}\`,
+            \`staked_\${stakeSym}\`,
+            \`total_\${stakeSym}\`,
+            "holding_raw",
+            "staked_raw",
+            "total_raw"
+          ];
+          const lines = [head.join(",")];
+          for (const r of rows) {
+            lines.push([
+              r.address,
+              "0",
+              fmtUnits(r.staked, stakeDec),
+              fmtUnits(r.total,  stakeDec),
+              "0",
+              r.staked.toString(),
+              r.total.toString()
+            ].join(","));
+          }
+          const fname = \`stakers_only_pool\${POOL_ID}.csv\`;
+          downloadText(fname, lines.join("\\n"));
+          $("scanState").textContent = "Holders API unavailable; exported stakers only.";
+          alert("Holders API unavailable (CORS or network). Exported stakers-only CSV as a fallback.");
+        } else {
+          $("scanState").textContent = "Export failed";
+          alert("Export failed: " + (err?.message || err));
+        }
+      } finally {
+        btn.disabled = false;
+        btn.textContent = old;
+        // $("scanState").innerHTML = prevState; // keep updated status instead
+      }
+    }
+
+    /* ====== pool meta ====== */
+    async function loadPoolMeta(){
+      $("scanState").innerHTML = \`Loading pool data … <span class="spinner"></span>\`;
+      $("poolIdLabel").textContent = String(POOL_ID);
+      $("poolIdLabelCard").textContent = String(POOL_ID);
+
+      const core   = await stakingRO.getPoolCore(POOL_ID);
+      const stakingToken = core[0];
+      const rewardToken  = core[1];
+
+      const ercS = new ethers.Contract(stakingToken, ERC20_MIN, ro);
+      const ercR = new ethers.Contract(rewardToken,  ERC20_MIN, ro);
+
+      const [sd, ssSym, ssName, rd, rsSym, rsName] = await Promise.all([
+        ercS.decimals().catch(()=>18),
+        ercS.symbol().catch(()=>null),
+        ercS.name().catch(()=>null),
+        ercR.decimals().catch(()=>18),
+        ercR.symbol().catch(()=>null),
+        ercR.name().catch(()=>null),
+      ]);
+
+      stakeDec = Number(sd);
+      rewardDec = Number(rd);
+      stakeSym = String(ssSym || ssName || "STAKE");
+      rewardSym = String(rsSym || rsName || "REWARD");
+
+      const pair = \`\${stakeSym} → \${rewardSym}\`;
+      $("symPair").textContent = pair;
+      $("symPairBadge").textContent = pair;
+    }
+
+    /* ====== stakers scan ====== */
+    async function findPoolCreatedBlock(){
+      try {
+        const latest = await ro.getBlockNumber();
+        const logs = await stakingRO.queryFilter(stakingRO.filters.PoolCreated(POOL_ID), 0, latest);
+        if (logs && logs.length) return logs[0].blockNumber;
+      } catch {}
+      return 0;
+    }
+
+    async function fetchLogsPaged(filter, from, to){
+      const out=[];
+      for(let f=from; f<=to; f+=BLOCK_STEP){
+        const t=Math.min(f+BLOCK_STEP-1, to);
+        const page = await stakingRO.queryFilter(filter, f, t);
+        out.push(...page);
+      }
+      return out;
+    }
+
+    function render(rows, sumStake, sumPending){
+      const tb = $("tbody");
+      if (!rows.length){
+        tb.innerHTML = \`<tr><td colspan="4" class="dim" style="padding:12px">No active stakers.</td></tr>\`;
+      } else {
+        tb.innerHTML = rows.map(r=>{
+          const stake = Number(fmtUnits(r.stake, stakeDec)).toLocaleString();
+          const pend  = Number(fmtUnits(r.pending, rewardDec)).toLocaleString();
+          const date  = r.stakeTs ? new Date(r.stakeTs*1000).toISOString().slice(0,10) : "—";
+          const href  = PEPUSCAN_ADDR + r.address;
+          const label = r.address.slice(0,8) + "…" + r.address.slice(-6);
+          return \`<tr>
+            <td class="addr"><a class="addr-link" href="\${href}" target="_blank" rel="noopener">\${label}</a></td>
+            <td class="right">\${stake} \${stakeSym}</td>
+            <td class="right">\${pend} \${rewardSym}</td>
+            <td class="right">\${date}</td>
+          </tr>\`;
+        }).join("");
+      }
+      $("kCount").textContent = String(rows.length);
+      $("kSumStake").textContent = \`\${Number(fmtUnits(sumStake, stakeDec)).toLocaleString()} \${stakeSym}\`;
+      $("kSumPending").textContent = \`\${Number(fmtUnits(sumPending, rewardDec)).toLocaleString()} \${rewardSym}\`;
+      $("scanState").textContent = "Updated";
+    }
+
+    async function loadStakers(){
+      try{
+        $("scanState").innerHTML = \`Scanning stakers … <span class="spinner"></span>\`;
+        $("tbody").innerHTML = \`<tr><td colspan="4" class="dim" style="padding:12px">Scanning… <span class="spinner"></span></td></tr>\`;
+
+        const latest = await ro.getBlockNumber();
+        let fromBlock = FROM_BLOCK_HINT || 0;
+        if (!fromBlock) fromBlock = await findPoolCreatedBlock();
+
+        const [staked, unstaked, paid, restaked] = await Promise.all([
+          fetchLogsPaged(stakingRO.filters.Staked(POOL_ID, null), fromBlock, latest),
+          fetchLogsPaged(stakingRO.filters.Unstaked(POOL_ID, null), fromBlock, latest),
+          fetchLogsPaged(stakingRO.filters.RewardPaid(POOL_ID, null), fromBlock, latest),
+          fetchLogsPaged(stakingRO.filters.RewardRestaked(POOL_ID, null), fromBlock, latest),
+        ]);
+
+        const stakers = new Set();
+        staked.forEach(l=>stakers.add(l.args.user));
+        unstaked.forEach(l=>stakers.add(l.args.user));
+        paid.forEach(l=>stakers.add(l.args.user));
+        restaked.forEach(l=>stakers.add(l.args.user));
+
+        const addrs = [...stakers];
+        const limit = pLimit(10);
+        const rows = [];
+        let sumStake = ethers.BigNumber.from(0);
+        let sumPending = ethers.BigNumber.from(0);
+
+        STAKER_MAP.clear();
+
+        await Promise.all(addrs.map(addr => limit(async ()=>{
+          const info = await stakingRO.getStakeInfo(POOL_ID, addr);
+          const amount = ethers.BigNumber.from(info[0]||0);
+          if (amount.gt(0)){
+            const pending = await stakingRO.pendingRewards(POOL_ID, addr);
+            rows.push({
+              address: addr,
+              stake: amount,
+              pending: ethers.BigNumber.from(pending||0),
+              stakeTs: Number(info[3]||0),
+            });
+            sumStake = sumStake.add(amount);
+            sumPending = sumPending.add(pending||0);
+
+            STAKER_MAP.set(addr.toLowerCase(), amount);
+          }
+        })));
+
+        rows.sort((a,b)=> (b.stake.gt(a.stake) ? 1 : -1));
+        render(rows, sumStake, sumPending);
+      }catch(e){
+        console.error(e);
+        $("scanState").textContent = "Error";
+        $("tbody").innerHTML = \`<tr><td colspan="4" style="padding:12px;color:#ffb4b4">Scan failed: \${e?.message||e}</td></tr>\`;
+      }
+    }
+
+    /* ====== wire up ====== */
+    document.addEventListener('DOMContentLoaded', () => {
+      $("year").textContent = new Date().getFullYear();
+
+      $("home").addEventListener("click", (e)=>{
+        // keep default href to finpepe.com
+      });
+
+      $("refresh").addEventListener("click", () => {
+        $("tbody").innerHTML = \`<tr><td colspan="4" class="dim" style="padding:12px">Loading… <span class="spinner"></span></td></tr>\`;
+        loadPoolMeta().then(loadStakers);
+      });
+
+      $("exportHS").addEventListener("click", () => {
+        exportHoldersAndStakersCSV();
+      });
+
+      // initial load
+      loadPoolMeta().then(loadStakers);
+    });
+    </script>
+</body>
+</html>
