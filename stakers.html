@@ -473,7 +473,7 @@
     /* Explorer + proxy (for holders during CSV export) */
     const EXPLORER_BASE = "https://explorer-pepu-v2-mainnet-0.t.conduit.xyz";
     const PROXY_ORIGIN  = "https://odd-feather-f250.toshtech777.workers.dev/";
-    const prox = (url) => \`\${PROXY_ORIGIN}?url=\${encodeURIComponent(url)}&t=\${Date.now()}\`;
+    const prox = (url) => `${PROXY_ORIGIN}?url=${encodeURIComponent(url)}&t=${Date.now()}`;
 
     /* optional: from-block hint (0 = auto via PoolCreated) */
     const FROM_BLOCK_HINT = 0;
@@ -522,7 +522,7 @@
 
     /* paginate Conduit explorer holders endpoint */
     async function fetchAllHoldersForToken(tokenAddr) {
-      const urlBase = \`\${EXPLORER_BASE.replace(/\\/$/,'')}/api/v2/tokens/\${tokenAddr}/holders\`;
+      const urlBase = `${EXPLORER_BASE.replace(/\/$/,'')}/api/v2/tokens/${tokenAddr}/holders`;
       let params = null;
       const out = [];
 
@@ -530,7 +530,7 @@
         const qs = params ? ("?" + new URLSearchParams(params)) : "";
         const target = prox(urlBase + qs);
         const resp = await fetch(target, { mode: "cors" });
-        if (!resp.ok) throw new Error(\`Explorer error \${resp.status}\`);
+        if (!resp.ok) throw new Error(`Explorer error ${resp.status}`);
         const data = await resp.json();
 
         for (const it of (data.items || [])) {
@@ -568,7 +568,7 @@
       btn.disabled = true;
       btn.textContent = "Exporting…";
       const prevState = $("scanState").innerHTML;
-      $("scanState").innerHTML = \`Exporting CSV … <span class="spinner"></span>\`;
+      $("scanState").innerHTML = `Exporting CSV … <span class="spinner"></span>`;
 
       try {
         // get staking token for current pool
@@ -594,15 +594,15 @@
         }
         rows.sort((a,b) => b.total.gt(a.total) ? 1 : -1);
 
-        const head = [
-          "address",
-          \`holding_\${stakeSym}\`,
-          \`staked_\${stakeSym}\`,
-          \`total_\${stakeSym}\`,
-          "holding_raw",
-          "staked_raw",
-          "total_raw"
-        ];
+    const head = [
+      "address",
+      `holding_${stakeSym}`,
+      `staked_${stakeSym}`,
+      `total_${stakeSym}`,
+      "holding_raw",
+      "staked_raw",
+      "total_raw"
+    ];
         const lines = [head.join(",")];
 
         for (const r of rows) {
@@ -620,10 +620,10 @@
           ].join(","));
         }
 
-        const fname = \`holders_stakers_pool\${POOL_ID}.csv\`;
+        const fname = `holders_stakers_pool${POOL_ID}.csv`;
         downloadText(fname, lines.join("\\n"));
 
-        $("scanState").textContent = \`CSV exported (\${rows.length} addresses)\`;
+        $("scanState").textContent = `CSV exported (${rows.length} addresses)`;
       } catch (err) {
         console.error(err);
         // graceful fallback: stakers-only file if holders API blocked by CORS
@@ -636,9 +636,9 @@
 
           const head = [
             "address",
-            \`holding_\${stakeSym}\`,
-            \`staked_\${stakeSym}\`,
-            \`total_\${stakeSym}\`,
+            `holding_${stakeSym}`,
+            `staked_${stakeSym}`,
+            `total_${stakeSym}`,
             "holding_raw",
             "staked_raw",
             "total_raw"
@@ -655,7 +655,7 @@
               r.total.toString()
             ].join(","));
           }
-          const fname = \`stakers_only_pool\${POOL_ID}.csv\`;
+          const fname = `stakers_only_pool${POOL_ID}.csv`;
           downloadText(fname, lines.join("\\n"));
           $("scanState").textContent = "Holders API unavailable; exported stakers only.";
           alert("Holders API unavailable (CORS or network). Exported stakers-only CSV as a fallback.");
@@ -672,7 +672,7 @@
 
     /* ====== pool meta ====== */
     async function loadPoolMeta(){
-      $("scanState").innerHTML = \`Loading pool data … <span class="spinner"></span>\`;
+      $("scanState").innerHTML = `Loading pool data … <span class="spinner"></span>`;
       $("poolIdLabel").textContent = String(POOL_ID);
       $("poolIdLabelCard").textContent = String(POOL_ID);
 
@@ -697,7 +697,7 @@
       stakeSym = String(ssSym || ssName || "STAKE");
       rewardSym = String(rsSym || rsName || "REWARD");
 
-      const pair = \`\${stakeSym} → \${rewardSym}\`;
+      const pair = `${stakeSym} → ${rewardSym}`;
       $("symPair").textContent = pair;
       $("symPairBadge").textContent = pair;
     }
@@ -725,7 +725,7 @@
     function render(rows, sumStake, sumPending){
       const tb = $("tbody");
       if (!rows.length){
-        tb.innerHTML = \`<tr><td colspan="4" class="dim" style="padding:12px">No active stakers.</td></tr>\`;
+        tb.innerHTML = `<tr><td colspan="4" class="dim" style="padding:12px">No active stakers.</td></tr>`;
       } else {
         tb.innerHTML = rows.map(r=>{
           const stake = Number(fmtUnits(r.stake, stakeDec)).toLocaleString();
@@ -733,24 +733,24 @@
           const date  = r.stakeTs ? new Date(r.stakeTs*1000).toISOString().slice(0,10) : "—";
           const href  = PEPUSCAN_ADDR + r.address;
           const label = r.address.slice(0,8) + "…" + r.address.slice(-6);
-          return \`<tr>
-            <td class="addr"><a class="addr-link" href="\${href}" target="_blank" rel="noopener">\${label}</a></td>
-            <td class="right">\${stake} \${stakeSym}</td>
-            <td class="right">\${pend} \${rewardSym}</td>
-            <td class="right">\${date}</td>
-          </tr>\`;
+          return `<tr>
+            <td class="addr"><a class="addr-link" href="${href}" target="_blank" rel="noopener">${label}</a></td>
+            <td class="right">${stake} ${stakeSym}</td>
+            <td class="right">${pend} ${rewardSym}</td>
+            <td class="right">${date}</td>
+          </tr>`;
         }).join("");
       }
       $("kCount").textContent = String(rows.length);
-      $("kSumStake").textContent = \`\${Number(fmtUnits(sumStake, stakeDec)).toLocaleString()} \${stakeSym}\`;
-      $("kSumPending").textContent = \`\${Number(fmtUnits(sumPending, rewardDec)).toLocaleString()} \${rewardSym}\`;
+      $("kSumStake").textContent = `${Number(fmtUnits(sumStake, stakeDec)).toLocaleString()} ${stakeSym}`;
+      $("kSumPending").textContent = `${Number(fmtUnits(sumPending, rewardDec)).toLocaleString()} ${rewardSym}`;
       $("scanState").textContent = "Updated";
     }
 
     async function loadStakers(){
       try{
-        $("scanState").innerHTML = \`Scanning stakers … <span class="spinner"></span>\`;
-        $("tbody").innerHTML = \`<tr><td colspan="4" class="dim" style="padding:12px">Scanning… <span class="spinner"></span></td></tr>\`;
+        $("scanState").innerHTML = `Scanning stakers … <span class="spinner"></span>`;
+        $("tbody").innerHTML = `<tr><td colspan="4" class="dim" style="padding:12px">Scanning… <span class="spinner"></span></td></tr>`;
 
         const latest = await ro.getBlockNumber();
         let fromBlock = FROM_BLOCK_HINT || 0;
@@ -800,7 +800,7 @@
       }catch(e){
         console.error(e);
         $("scanState").textContent = "Error";
-        $("tbody").innerHTML = \`<tr><td colspan="4" style="padding:12px;color:#ffb4b4">Scan failed: \${e?.message||e}</td></tr>\`;
+        $("tbody").innerHTML = `<tr><td colspan="4" style="padding:12px;color:#ffb4b4">Scan failed: ${e?.message||e}</td></tr>`;
       }
     }
 
@@ -813,7 +813,7 @@
       });
 
       $("refresh").addEventListener("click", () => {
-        $("tbody").innerHTML = \`<tr><td colspan="4" class="dim" style="padding:12px">Loading… <span class="spinner"></span></td></tr>\`;
+        $("tbody").innerHTML = `<tr><td colspan="4" class="dim" style="padding:12px">Loading… <span class="spinner"></span></td></tr>`;
         loadPoolMeta().then(loadStakers);
       });
 
