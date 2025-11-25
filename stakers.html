@@ -620,9 +620,9 @@
           ].join(","));
         }
 
-        const fname = `holders_stakers_pool${POOL_ID}.csv`;
-        downloadText(fname, lines.join("\\n"));
-
+		const fname = `holders_stakers_pool${POOL_ID}.csv`;
+		const csvText = lines.join("\n");   // or "\r\n"
+		downloadText(fname, csvText);
         $("scanState").textContent = `CSV exported (${rows.length} addresses)`;
       } catch (err) {
         console.error(err);
@@ -655,8 +655,9 @@
               r.total.toString()
             ].join(","));
           }
-          const fname = `stakers_only_pool${POOL_ID}.csv`;
-          downloadText(fname, lines.join("\\n"));
+		const fname = `stakers_only_pool${POOL_ID}.csv`;
+		const csvText = lines.join("\n");   // or "\r\n"
+		downloadText(fname, csvText);
           $("scanState").textContent = "Holders API unavailable; exported stakers only.";
           alert("Holders API unavailable (CORS or network). Exported stakers-only CSV as a fallback.");
         } else {
