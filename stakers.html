@@ -387,7 +387,7 @@
         </div>
 
         <div id="statusLine" class="status-line">
-            Pool #<span id="poolIdLabel">5</span> · <span id="symPair">—</span>
+            Pool· <span id="symPair">—</span>
         </div>
     </header>
 
@@ -404,7 +404,7 @@
 
             <div class="label-row">
                 <span class="dim">Pool</span>
-                <span>#<span id="poolIdLabelCard">5</span> <span id="symPairBadge" class="badge">—</span></span>
+                <span><span id="symPairBadge" class="badge">—</span></span>
             </div>
 
             <div class="row-spacer"></div>
@@ -674,8 +674,6 @@
     /* ====== pool meta ====== */
     async function loadPoolMeta(){
       $("scanState").innerHTML = `Loading pool data … <span class="spinner"></span>`;
-      $("poolIdLabel").textContent = String(POOL_ID);
-      $("poolIdLabelCard").textContent = String(POOL_ID);
 
       const core   = await stakingRO.getPoolCore(POOL_ID);
       const stakingToken = core[0];
